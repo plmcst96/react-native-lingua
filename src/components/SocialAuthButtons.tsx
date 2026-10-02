@@ -55,7 +55,7 @@ export default function SocialAuthButtons() {
     }
     // Everything else uses Clerk's in-app browser flow.
     // Google could use a native sheet via useSignInWithGoogle() from "@clerk/expo/google",
-    // but that needs your own Google Cloud client IDs in .env.
+    // but that needs the @clerk/expo-google-signin package and your own Google Cloud client IDs.
     return startSSOFlow({ strategy: SSO_STRATEGIES[provider] });
   }
 
