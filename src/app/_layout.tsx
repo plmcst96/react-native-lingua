@@ -38,6 +38,10 @@ export default function RootLayout() {
   );
 }
 
+/**
+ * Render routes guarded by sign-in state, or nothing while auth is loading.
+ * Hide the splash screen once auth loads and navigate to Sign Up on sign-out.
+ */
 function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
   const wasSignedIn = useRef(isSignedIn);

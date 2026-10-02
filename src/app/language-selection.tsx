@@ -18,6 +18,12 @@ import { images } from "@/constants/images";
 import { languages } from "@/data/languages";
 import type { LanguageCode } from "@/types/learning";
 
+/**
+ * Render language choices with Spanish initially selected and selection kept local.
+ * Search matches English or native names by case-insensitive substring after
+ * trimming whitespace; an empty query shows all languages. Back and Continue
+ * return to the previous route, or home when there is no navigation history.
+ */
 export default function LanguageSelection() {
   const { width } = useWindowDimensions();
   const [query, setQuery] = useState("");
@@ -35,6 +41,7 @@ export default function LanguageSelection() {
   // so it's drawn a bit wider than the screen and cropped at the bottom.
   const earthSize = width * 1.1;
 
+  /** Go back when possible; otherwise replace the current route with home. */
   function goBack() {
     if (router.canGoBack()) {
       router.back();

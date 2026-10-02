@@ -9,7 +9,11 @@ type LanguageCardProps = {
   onPress: () => void;
 };
 
-// One row in the language list: round flag, name, learners and a check or chevron.
+/**
+ * Render a pressable language row with its flag, name, and learner count.
+ * isSelected controls the highlight, checkmark, and accessibility selection state;
+ * pressing calls onPress, leaving selection updates to the caller.
+ */
 export default function LanguageCard({ language, isSelected, onPress }: LanguageCardProps) {
   return (
     <TouchableOpacity

@@ -594,16 +594,25 @@ export const lessons: Lesson[] = [
   },
 ];
 
+/**
+ * Return matching lessons in their source order, or an empty array if none match.
+ * The array is new; its lesson objects are shared with the source data.
+ */
 export function getLessonsByLanguage(languageCode: LanguageCode) {
   return lessons.filter((lesson) => lesson.languageCode === languageCode);
 }
 
+/**
+ * Return lessons for the exact unit ID in ascending order, or an empty array.
+ * Sorting uses each lesson's order field in a new array; lesson objects are shared.
+ */
 export function getLessonsByUnit(unitId: string) {
   return lessons
     .filter((lesson) => lesson.unitId === unitId)
     .sort((a, b) => a.order - b.order);
 }
 
+/** Return the first lesson with the exact ID, or undefined if absent. */
 export function getLessonById(id: string) {
   return lessons.find((lesson) => lesson.id === id);
 }
