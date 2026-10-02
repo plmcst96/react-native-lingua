@@ -1,11 +1,7 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
 
+// The app always opens on onboarding for now.
+// Later (with Clerk) this is where we'll send signed-in users to the home tabs instead.
 export default function Index() {
-  return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-xl font-bold text-blue-500">
-        Lingua
-      </Text>
-    </View>
-  );
+  return <Redirect href="/onboarding" />;
 }

@@ -151,3 +151,26 @@
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
+
+/* ==============================
+   BUTTON UTILITIES (BEM)
+   <TouchableOpacity className="button--primary">
+     <Text className="button__label">…</Text>
+============================== */
+
+/* Big purple call-to-action, e.g. "Get Started" */
+@utility button--primary {
+  height: 76px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: var(--color-lingua-deep-purple);
+}
+
+@utility button__label {
+  font-family: var(--font-poppins-semibold);
+  font-size: 18px;
+  line-height: 27px;
+  color: var(--color-background);
+}
