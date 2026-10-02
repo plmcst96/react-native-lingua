@@ -28,24 +28,20 @@ const providers: { name: Provider; logo: ImageSourcePropType }[] = [
   { name: "Apple", logo: images.logoApple },
 ];
 
-// Clerk's OAuth strategy name for each button.
 const SSO_STRATEGIES = {
   Google: "oauth_google",
   Facebook: "oauth_facebook",
   Apple: "oauth_apple",
 } as const;
 
-// "or continue with" divider followed by the Google / Facebook / Apple buttons.
-// The same buttons work for sign up and sign in: Clerk creates the account if it doesn't exist yet.
+// Works for sign up and sign in: Clerk creates the account if it doesn't exist yet.
 export default function SocialAuthButtons() {
   const { startAppleAuthenticationFlow } = useSignInWithApple();
   const { startSSOFlow } = useSSO();
   const [loadingProvider, setLoadingProvider] = useState<Provider | null>(null);
 
   async function startFlow(provider: Provider) {
-    // Native Apple sheet on iOS, when the device supports it
-    // (a simulator without an Apple ID, Expo Go, or a build without the
-    // "Sign in with Apple" capability don't — those fall back to the browser).
+    // Simulators without an Apple ID, Expo Go and builds without the capability fall back to the browser.
     if (
       provider === "Apple" &&
       Platform.OS === "ios" &&
@@ -53,9 +49,7 @@ export default function SocialAuthButtons() {
     ) {
       return startAppleAuthenticationFlow();
     }
-    // Everything else uses Clerk's in-app browser flow.
-    // Google could use a native sheet via useSignInWithGoogle() from "@clerk/expo/google",
-    // but that needs the @clerk/expo-google-signin package and your own Google Cloud client IDs.
+    // A native Google sheet would need @clerk/expo-google-signin and your own Google client IDs.
     return startSSOFlow({ strategy: SSO_STRATEGIES[provider] });
   }
 
@@ -65,8 +59,7 @@ export default function SocialAuthButtons() {
     try {
       const { createdSessionId, setActive } = await startFlow(provider);
 
-      // Activating the new session signs the user in.
-      // The guards in app/_layout.tsx then move them to the home route.
+      // The guards in _layout.tsx then move the user to the right screen.
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
       }

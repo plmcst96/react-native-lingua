@@ -12,8 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SpeechBubble from "@/components/SpeechBubble";
 import { images } from "@/constants/images";
 
-// The illustration is drawn on a fixed-size "stage" taken from the design
-// (a 393pt-wide phone), then scaled to fit whatever space the device has left.
+// The illustration is laid out on the design's 393pt stage, then scaled to fit the device.
 const STAGE_WIDTH = 393;
 const STAGE_HEIGHT = 395;
 
@@ -27,7 +26,6 @@ export default function Onboarding() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
-      {/* Logo */}
       <View className="flex-row items-center justify-center">
         <Image source={images.mascotLogo} className="size-[78px]" />
         <Text className="font-poppins-semibold text-[32px] leading-[40px] text-text-primary">
@@ -35,7 +33,6 @@ export default function Onboarding() {
         </Text>
       </View>
 
-      {/* Headline */}
       <View className="mt-8 px-9">
         <Text className="heading--h1 text-[34px] leading-[48px]">
           Your AI language{"\n"}
@@ -46,7 +43,6 @@ export default function Onboarding() {
         </Text>
       </View>
 
-      {/* Illustration */}
       <View
         className="flex-1 items-center justify-center"
         onLayout={handleIllustrationLayout}
@@ -58,7 +54,7 @@ export default function Onboarding() {
             transform: [{ scale: stageScale }],
           }}
         >
-          {/* Soft ground shadow under the fox's feet */}
+          {/* Ground shadow under the fox */}
           <View className="absolute left-[104px] top-[368px] h-[22px] w-[184px] rounded-full bg-[rgba(13,19,43,0.06)]" />
 
           <Image
@@ -90,7 +86,6 @@ export default function Onboarding() {
         </View>
       </View>
 
-      {/* Call to action */}
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={() => router.push("/sign-up")}

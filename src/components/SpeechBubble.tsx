@@ -2,11 +2,8 @@ import { Text, View } from "react-native";
 
 type SpeechBubbleProps = {
   text: string;
-  // Which bottom corner the little pointer sits under.
   tail: "left" | "right";
-  // Position and rotation, e.g. "absolute left-10 top-5 -rotate-6".
   className?: string;
-  // Background color, shared by the bubble and its tail.
   colorClassName: string;
   textClassName: string;
 };

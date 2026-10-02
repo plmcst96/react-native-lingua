@@ -1,7 +1,6 @@
 import { isClerkAPIResponseError } from "@clerk/expo";
 
-// Prints the full Clerk error to the console for developers.
-// Users only ever see a short, friendly message chosen by the screen.
+// Users only see a short message chosen by the screen; developers get the full error here.
 export function logClerkError(context: string, error: unknown) {
   console.error(`[Clerk] ${context}`, error);
 

@@ -4,11 +4,9 @@ import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-n
 
 type AuthInputProps = TextInputProps & {
   label: string;
-  // Shows an eye button that toggles the text between hidden and visible.
   isPassword?: boolean;
 };
 
-// A labelled text field in a white rounded box, e.g. "Email" or "Password".
 export default function AuthInput({ label, isPassword, ...inputProps }: AuthInputProps) {
   const [isHidden, setIsHidden] = useState(true);
 

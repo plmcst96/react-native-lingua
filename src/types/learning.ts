@@ -1,19 +1,21 @@
-// Shared types for the hardcoded learning content in `data/`.
-
 export type LanguageCode = "es" | "fr" | "ja" | "ko" | "de" | "zh" | "it" | "en";
 
 export type Language = {
   code: LanguageCode;
-  name: string; // English name, e.g. "Spanish"
-  nativeName: string; // e.g. "Español"
-  flagUrl: string; // remote flag image from flagcdn.com
+  name: string;
+  nativeName: string;
+  flagUrl: string;
   learners: string; // display value, e.g. "28.4M"
+  greeting: string; // e.g. "Hola", shown on the home screen
 };
+
+export type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
 export type Unit = {
   id: string;
   languageCode: LanguageCode;
   order: number;
+  level: CEFRLevel;
   title: string;
   description: string;
 };
@@ -38,12 +40,11 @@ export type Activity = {
   instructions: string;
 };
 
-// Lesson-specific context for the AI teacher (Vision Agent, audio only).
 // The backend combines this with the lesson goal, vocabulary and phrases.
 export type AITeacherPrompt = {
-  scenario: string; // the situation the teacher role-plays
-  instructions: string; // what the teacher should focus on
-  openingLine: string; // the first thing the teacher says
+  scenario: string;
+  instructions: string;
+  openingLine: string;
 };
 
 export type Lesson = {

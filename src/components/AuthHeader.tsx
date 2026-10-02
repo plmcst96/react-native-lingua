@@ -9,7 +9,6 @@ type AuthHeaderProps = {
   subtitle: string;
 };
 
-// Back button, title, subtitle and the waving fox shared by Sign Up and Sign In.
 export default function AuthHeader({ title, subtitle }: AuthHeaderProps) {
   function handleBack() {
     if (router.canGoBack()) {

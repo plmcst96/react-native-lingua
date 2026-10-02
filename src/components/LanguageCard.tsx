@@ -9,11 +9,6 @@ type LanguageCardProps = {
   onPress: () => void;
 };
 
-/**
- * Render a pressable language row with its flag, name, and learner count.
- * isSelected controls the highlight, checkmark, and accessibility selection state;
- * pressing calls onPress, leaving selection updates to the caller.
- */
 export default function LanguageCard({ language, isSelected, onPress }: LanguageCardProps) {
   return (
     <TouchableOpacity
@@ -46,7 +41,7 @@ export default function LanguageCard({ language, isSelected, onPress }: Language
         {isSelected ? (
           <View className="size-[26px] items-center justify-center rounded-full bg-lingua-purple">
             <SymbolView
-              name={{ ios: "checkmark", android: "check" }}
+              name={{ ios: "checkmark", android: "check", web: "check" }}
               weight="bold"
               size={13}
               tintColor="#ffffff"
@@ -54,7 +49,7 @@ export default function LanguageCard({ language, isSelected, onPress }: Language
           </View>
         ) : (
           <SymbolView
-            name={{ ios: "chevron.right", android: "chevron_right" }}
+            name={{ ios: "chevron.right", android: "chevron_right", web: "chevron_right" }}
             weight="semibold"
             size={15}
             tintColor="#6b7280"

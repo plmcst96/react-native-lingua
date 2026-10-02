@@ -1,14 +1,17 @@
 import "@/global.css";
 
-import { ClerkProvider, useAuth } from "@clerk/expo";
+import { ClerkProvider, useAuth, useUser } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { useFonts } from "expo-font";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { PostHogProvider } from "posthog-react-native";
 import { useEffect, useRef } from "react";
 
-// Keep the splash screen visible until Poppins and Clerk are ready,
-// so text never flashes in the system font and the right screen shows first.
+import { posthog } from "@/lib/posthog";
+import { useLanguageStore } from "@/store/useLanguageStore";
+
+// Keep the splash visible until fonts, saved language and Clerk are ready.
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -18,33 +21,44 @@ if (!publishableKey) {
 }
 
 export default function RootLayout() {
-  // The names must match the --font-* tokens in src/global.css.
+  // Names must match the --font-* tokens in global.css.
   const [fontsLoaded, fontError] = useFonts({
     "Poppins-Regular": require("@/assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("@/assets/fonts/Poppins-Medium.ttf"),
     "Poppins-SemiBold": require("@/assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Bold": require("@/assets/fonts/Poppins-Bold.ttf"),
   });
+  const hasHydrated = useLanguageStore((state) => state.hasHydrated);
 
-  if (!fontsLoaded && !fontError) {
+  if ((!fontsLoaded && !fontError) || !hasHydrated) {
     return null;
   }
 
+  const navigator = <RootNavigator />;
+
   return (
-    // tokenCache stores the session in expo-secure-store, so users stay signed in.
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <RootNavigator />
+      {posthog ? (
+        <PostHogProvider client={posthog}>{navigator}</PostHogProvider>
+      ) : (
+        navigator
+      )}
     </ClerkProvider>
   );
 }
 
-/**
- * Render routes guarded by sign-in state, or nothing while auth is loading.
- * Hide the splash screen once auth loads and navigate to Sign Up on sign-out.
- */
 function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded: isUserLoaded, user } = useUser();
   const wasSignedIn = useRef(isSignedIn);
+  const identifiedUser = useRef<{
+    id: string;
+    email: string | null;
+    firstName: string | null;
+    lastName: string | null;
+  } | null>(null);
+  const hasLanguage = useLanguageStore((state) => state.selectedLanguage !== null);
+  const hadLanguage = useRef(hasLanguage);
 
   useEffect(() => {
     if (isLoaded) {
@@ -52,8 +66,66 @@ function RootNavigator() {
     }
   }, [isLoaded]);
 
-  // Signing out from inside the app goes straight to Sign Up.
-  // (Opening the app while signed out still starts on onboarding.)
+  // Clerk's user ID is stable, unlike email and names, and persists identity for all later telemetry.
+  useEffect(() => {
+    if (!isLoaded || !isUserLoaded) {
+      return;
+    }
+
+    if (!isSignedIn) {
+      if (identifiedUser.current) {
+        posthog?.reset();
+      }
+      identifiedUser.current = null;
+      return;
+    }
+
+    if (!user) {
+      return;
+    }
+
+    const currentIdentity = {
+      id: user.id,
+      email: user.primaryEmailAddress?.emailAddress ?? null,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+    const previousIdentity = identifiedUser.current;
+
+    if (
+      previousIdentity?.id === currentIdentity.id &&
+      previousIdentity.email === currentIdentity.email &&
+      previousIdentity.firstName === currentIdentity.firstName &&
+      previousIdentity.lastName === currentIdentity.lastName
+    ) {
+      return;
+    }
+
+    if (previousIdentity && previousIdentity.id !== user.id) {
+      posthog?.reset();
+    }
+
+    posthog?.identify(user.id, {
+      $set: {
+        ...(user.primaryEmailAddress?.emailAddress
+          ? { email: user.primaryEmailAddress.emailAddress }
+          : {}),
+        ...(user.firstName ? { first_name: user.firstName } : {}),
+        ...(user.lastName ? { last_name: user.lastName } : {}),
+      },
+    });
+    identifiedUser.current = currentIdentity;
+  }, [
+    isLoaded,
+    isSignedIn,
+    isUserLoaded,
+    user,
+    user?.primaryEmailAddress?.emailAddress,
+    user?.firstName,
+    user?.lastName,
+  ]);
+
+  // Signing out goes to Sign Up; a signed-out app launch still starts on onboarding.
   useEffect(() => {
     if (wasSignedIn.current && !isSignedIn) {
       router.replace("/sign-up");
@@ -61,17 +133,26 @@ function RootNavigator() {
     wasSignedIn.current = isSignedIn;
   }, [isSignedIn]);
 
+  // Home only exists after the guard re-renders, so the first-pick redirect happens here.
+  useEffect(() => {
+    if (isSignedIn && !hadLanguage.current && hasLanguage) {
+      router.replace("/");
+    }
+    hadLanguage.current = hasLanguage;
+  }, [isSignedIn, hasLanguage]);
+
   if (!isLoaded) {
     return null;
   }
 
-  // Protected screens only exist while their guard is true.
-  // Signing in or out flips the guards and Expo Router moves the user automatically:
-  // signed out → onboarding (or Sign Up right after a sign out), signed in → home (/).
+  // When a guard turns false, Expo Router redirects to the first available screen.
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={isSignedIn && hasLanguage}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+
       <Stack.Protected guard={isSignedIn}>
-        <Stack.Screen name="index" />
         <Stack.Screen name="language-selection" />
       </Stack.Protected>
 

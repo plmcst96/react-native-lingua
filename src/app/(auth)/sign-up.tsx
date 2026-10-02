@@ -17,6 +17,7 @@ import AuthInput from "@/components/AuthInput";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 import VerificationCodeModal from "@/components/VerificationCodeModal";
 import { logClerkError } from "@/lib/clerk";
+import { posthog } from "@/lib/posthog";
 
 export default function SignUp() {
   const { signUp, fetchStatus } = useSignUp();
@@ -28,7 +29,6 @@ export default function SignUp() {
 
   const isSubmitting = fetchStatus === "fetching" && !isVerifying;
 
-  // 1. Create the account, then ask Clerk to email a verification code.
   async function handleSignUp() {
     const { error } = await signUp.password({
       emailAddress: email.trim(),
@@ -47,11 +47,11 @@ export default function SignUp() {
       return;
     }
 
+    posthog?.capture("sign_up_started");
     setCodeError(null);
     setIsVerifying(true);
   }
 
-  // 2. Check the 6-digit code. Returns true when the user is signed in.
   async function handleVerifyCode(code: string) {
     const { error } = await signUp.verifications.verifyEmailCode({ code });
     if (error) {
@@ -60,8 +60,7 @@ export default function SignUp() {
       return false;
     }
 
-    // Still "missing_requirements" means the Clerk Dashboard requires more
-    // fields than this screen collects (e.g. phone number or username).
+    // The Clerk Dashboard requires fields this screen doesn't collect (e.g. phone number).
     if (signUp.status !== "complete") {
       console.error(
         `[Clerk] sign up not complete: status=${signUp.status}, missingFields=${signUp.missingFields.join(", ")}`,
@@ -70,8 +69,7 @@ export default function SignUp() {
       return false;
     }
 
-    // 3. Activate the new session. The guards in app/_layout.tsx
-    // notice the user is signed in and show the home route (/).
+    // The guards in _layout.tsx then move the user to the right screen.
     const { error: finalizeError } = await signUp.finalize();
     if (finalizeError) {
       logClerkError("finalize sign up", finalizeError);
@@ -79,6 +77,7 @@ export default function SignUp() {
       return false;
     }
 
+    posthog?.capture("sign_up_completed");
     return true;
   }
 
@@ -155,7 +154,7 @@ export default function SignUp() {
           </TouchableOpacity>
         </View>
 
-        {/* Clerk's bot protection mounts here on web; it's skipped on iOS and Android */}
+        {/* Clerk's bot protection mounts here on web only */}
         <View nativeID="clerk-captcha" />
       </ScrollView>
 

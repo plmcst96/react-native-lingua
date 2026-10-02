@@ -17,8 +17,8 @@ import AuthInput from "@/components/AuthInput";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 import VerificationCodeModal from "@/components/VerificationCodeModal";
 import { logClerkError } from "@/lib/clerk";
+import { posthog } from "@/lib/posthog";
 
-// Passwordless sign in: the user types their email and Clerk emails them a code.
 export default function SignIn() {
   const { signIn, fetchStatus } = useSignIn();
 
@@ -28,7 +28,6 @@ export default function SignIn() {
 
   const isSubmitting = fetchStatus === "fetching" && !isVerifying;
 
-  // 1. Ask Clerk to email a sign-in code.
   async function handleSignIn() {
     const { error } = await signIn.emailCode.sendCode({
       emailAddress: email.trim(),
@@ -39,11 +38,11 @@ export default function SignIn() {
       return;
     }
 
+    posthog?.capture("sign_in_code_requested");
     setCodeError(null);
     setIsVerifying(true);
   }
 
-  // 2. Check the 6-digit code. Returns true when the user is signed in.
   async function handleVerifyCode(code: string) {
     const { error } = await signIn.emailCode.verifyCode({ code });
     if (error) {
@@ -58,8 +57,7 @@ export default function SignIn() {
       return false;
     }
 
-    // 3. Activate the session. The guards in app/_layout.tsx
-    // notice the user is signed in and show the home route (/).
+    // The guards in _layout.tsx then move the user to the right screen.
     const { error: finalizeError } = await signIn.finalize();
     if (finalizeError) {
       logClerkError("finalize sign in", finalizeError);
@@ -67,6 +65,7 @@ export default function SignIn() {
       return false;
     }
 
+    posthog?.capture("sign_in_completed");
     return true;
   }
 
