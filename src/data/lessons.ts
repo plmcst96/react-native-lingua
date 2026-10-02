@@ -595,12 +595,17 @@ export function getLessonById(id: string) {
   return lessons.find((lesson) => lesson.id === id);
 }
 
+type CurrentLessonState = { status: "in-progress"; lesson: Lesson } | { status: "completed" };
+
 // Lessons are taken in unit order, so the next one is right after the completed ones.
-// Returns null once every lesson in the path is completed.
 export function getCurrentLesson(
   languageCode: LanguageCode,
   completedLessonCount: number,
-): Lesson | null {
+): CurrentLessonState {
   const path = getUnitsByLanguage(languageCode).flatMap((unit) => getLessonsByUnit(unit.id));
-  return completedLessonCount < path.length ? path[completedLessonCount] : null;
+  if (completedLessonCount >= path.length) {
+    return { status: "completed" };
+  }
+
+  return { status: "in-progress", lesson: path[completedLessonCount] };
 }

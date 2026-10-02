@@ -1,5 +1,5 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useUser } from "@clerk/expo";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +21,8 @@ export default function Home() {
   // The (tabs) guard in _layout.tsx only renders Home once a language is saved.
   const languageCode = selectedLanguage ?? "es";
   const language = getLanguageByCode(languageCode);
-  const lesson = getCurrentLesson(languageCode, progress.completedLessonCount);
+  const currentLesson = getCurrentLesson(languageCode, progress.completedLessonCount);
+  const lesson = currentLesson.status === "in-progress" ? currentLesson.lesson : undefined;
   const unit = lesson ? getUnitById(lesson.unitId) : undefined;
   const conversation = lesson?.activities.find((activity) => activity.type === "conversation");
 
@@ -112,7 +113,7 @@ export default function Home() {
             <View className="absolute left-[210px] top-[60px] size-[160px] rotate-45 rounded-2xl bg-[#4b34e0]/30" />
             <Image source={images.palace} className="absolute -bottom-[35px] -right-[30px] size-[208px]" />
             <Text className="font-poppins text-base leading-6 text-white">
-              {lesson ? "Continue learning" : "All lessons completed 🎉"}
+              {currentLesson.status === "completed" ? "All lessons completed 🎉" : "Continue learning"}
             </Text>
             <Text className="mt-1 font-poppins-semibold text-[28px] leading-[34px] text-white">
               {language?.name}

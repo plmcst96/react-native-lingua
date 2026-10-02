@@ -51,8 +51,12 @@ function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
   const { isLoaded: isUserLoaded, user } = useUser();
   const wasSignedIn = useRef(isSignedIn);
-  const identifiedUserId = useRef<string | null>(null);
-  const hasResolvedPostHogIdentity = useRef(false);
+  const identifiedUser = useRef<{
+    id: string;
+    email: string | null;
+    firstName: string | null;
+    lastName: string | null;
+  } | null>(null);
   const hasLanguage = useLanguageStore((state) => state.selectedLanguage !== null);
   const hadLanguage = useRef(hasLanguage);
 
@@ -68,20 +72,36 @@ function RootNavigator() {
       return;
     }
 
-    if (!isSignedIn || !user) {
-      if (!hasResolvedPostHogIdentity.current || identifiedUserId.current) {
+    if (!isSignedIn) {
+      if (identifiedUser.current) {
         posthog?.reset();
       }
-      identifiedUserId.current = null;
-      hasResolvedPostHogIdentity.current = true;
+      identifiedUser.current = null;
       return;
     }
 
-    if (identifiedUserId.current === user.id) {
+    if (!user) {
       return;
     }
 
-    if (identifiedUserId.current) {
+    const currentIdentity = {
+      id: user.id,
+      email: user.primaryEmailAddress?.emailAddress ?? null,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+    const previousIdentity = identifiedUser.current;
+
+    if (
+      previousIdentity?.id === currentIdentity.id &&
+      previousIdentity.email === currentIdentity.email &&
+      previousIdentity.firstName === currentIdentity.firstName &&
+      previousIdentity.lastName === currentIdentity.lastName
+    ) {
+      return;
+    }
+
+    if (previousIdentity && previousIdentity.id !== user.id) {
       posthog?.reset();
     }
 
@@ -94,9 +114,16 @@ function RootNavigator() {
         ...(user.lastName ? { last_name: user.lastName } : {}),
       },
     });
-    identifiedUserId.current = user.id;
-    hasResolvedPostHogIdentity.current = true;
-  }, [isLoaded, isSignedIn, isUserLoaded, user]);
+    identifiedUser.current = currentIdentity;
+  }, [
+    isLoaded,
+    isSignedIn,
+    isUserLoaded,
+    user,
+    user?.primaryEmailAddress?.emailAddress,
+    user?.firstName,
+    user?.lastName,
+  ]);
 
   // Signing out goes to Sign Up; a signed-out app launch still starts on onboarding.
   useEffect(() => {

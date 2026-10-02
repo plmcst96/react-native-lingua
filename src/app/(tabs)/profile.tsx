@@ -12,9 +12,9 @@ export default function Profile() {
   // On success, _layout.tsx redirects to Sign Up, so only a failure needs resetting.
   async function handleSignOut() {
     setIsSigningOut(true);
-    posthog?.capture("user_signed_out");
     try {
       await signOut();
+      posthog?.capture("user_signed_out");
     } catch (error) {
       logClerkError("Sign out failed", error);
       setIsSigningOut(false);

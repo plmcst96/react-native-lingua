@@ -19,14 +19,17 @@ const SLIDE_SPRING = { damping: 12, stiffness: 180, mass: 1 };
 const POP_SPRING = { damping: 8, stiffness: 250, mass: 1 };
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
+type TabRouteName = "index" | "learn" | "ai-teacher" | "chat" | "profile";
+type TabIconPair = { active: IconName; inactive: IconName };
 
-const tabIcons: Record<string, { active: IconName; inactive: IconName }> = {
+const tabIcons: Record<TabRouteName, TabIconPair> = {
   index: { active: "home", inactive: "home-outline" },
   learn: { active: "book", inactive: "book-outline" },
   "ai-teacher": { active: "sparkles", inactive: "sparkles-outline" },
   chat: { active: "chatbubbles", inactive: "chatbubbles-outline" },
   profile: { active: "person", inactive: "person-outline" },
 };
+const fallbackTabIcons: TabIconPair = { active: "apps", inactive: "apps-outline" };
 
 function getCircleX(index: number, tabWidth: number) {
   return index * tabWidth + (tabWidth - CIRCLE_SIZE) / 2;
@@ -68,6 +71,7 @@ export default function TabBar({ state, descriptors, navigation }: BottomTabBarP
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
           const label = descriptors[route.key].options.title ?? route.name;
+          const icons = tabIcons[route.name as TabRouteName] ?? fallbackTabIcons;
 
           function handlePress() {
             const event = navigation.emit({
@@ -92,7 +96,7 @@ export default function TabBar({ state, descriptors, navigation }: BottomTabBarP
               className="flex-1 items-center justify-center"
             >
               <Ionicons
-                name={isFocused ? tabIcons[route.name].active : tabIcons[route.name].inactive}
+                name={isFocused ? icons.active : icons.inactive}
                 size={24}
                 color={isFocused ? "#ffffff" : "#6b7280"}
               />
