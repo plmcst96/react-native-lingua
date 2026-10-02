@@ -168,6 +168,53 @@
   background-color: var(--color-lingua-deep-purple);
 }
 
+/* Purple gradient button, e.g. "Sign Up" on the auth screens */
+@utility button--gradient {
+  height: 58px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background-color: var(--color-lingua-deep-purple);
+  background-image: linear-gradient(90deg, #5b3bf6 0%, #7a62f8 100%);
+}
+
+/* White outlined button, e.g. "Continue with Google" */
+@utility button--outline {
+  height: 54px;
+  flex-direction: row;
+  align-items: center;
+  border-width: 1px;
+  border-color: var(--color-border);
+  border-radius: 14px;
+  background-color: var(--color-background);
+}
+
+/* ==============================
+   FORM UTILITIES (BEM)
+   <View className="input">
+     <Text className="input__label">Email</Text>
+============================== */
+
+/* White rounded box that holds a label and a TextInput */
+@utility input {
+  height: 76px;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-width: 1px;
+  border-color: var(--color-border);
+  border-radius: 16px;
+  background-color: var(--color-background);
+}
+
+@utility input__label {
+  font-family: var(--font-poppins);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+}
+
 @utility button__label {
   font-family: var(--font-poppins-semibold);
   font-size: 18px;
