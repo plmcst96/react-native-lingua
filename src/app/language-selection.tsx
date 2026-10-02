@@ -16,6 +16,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LanguageCard from "@/components/LanguageCard";
 import { images } from "@/constants/images";
 import { languages } from "@/data/languages";
+import { posthog } from "@/lib/posthog";
+import { posthogLogger } from "@/lib/posthog-logger";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import type { LanguageCode } from "@/types/learning";
 
@@ -47,7 +49,12 @@ export default function LanguageSelection() {
 
   function handleContinue() {
     const isFirstPick = savedLanguage === null;
+    posthog?.capture("language_selected", {
+      language_code: selectedCode,
+      is_first_selection: isFirstPick,
+    });
     setSelectedLanguage(selectedCode);
+    posthogLogger.languageSelectionSaved(selectedCode, isFirstPick);
 
     // On a first pick, _layout.tsx redirects to home.
     if (!isFirstPick) {

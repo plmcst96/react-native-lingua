@@ -17,6 +17,7 @@ import AuthInput from "@/components/AuthInput";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 import VerificationCodeModal from "@/components/VerificationCodeModal";
 import { logClerkError } from "@/lib/clerk";
+import { posthog } from "@/lib/posthog";
 
 export default function SignUp() {
   const { signUp, fetchStatus } = useSignUp();
@@ -46,6 +47,7 @@ export default function SignUp() {
       return;
     }
 
+    posthog?.capture("sign_up_started");
     setCodeError(null);
     setIsVerifying(true);
   }
@@ -75,6 +77,7 @@ export default function SignUp() {
       return false;
     }
 
+    posthog?.capture("sign_up_completed");
     return true;
   }
 

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 import { logClerkError } from "@/lib/clerk";
+import { posthog } from "@/lib/posthog";
 
 export default function Profile() {
   const { signOut } = useClerk();
@@ -11,6 +12,7 @@ export default function Profile() {
   // On success, _layout.tsx redirects to Sign Up, so only a failure needs resetting.
   async function handleSignOut() {
     setIsSigningOut(true);
+    posthog?.capture("user_signed_out");
     try {
       await signOut();
     } catch (error) {

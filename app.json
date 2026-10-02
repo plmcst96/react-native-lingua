@@ -40,7 +40,8 @@
       "@clerk/expo",
       "expo-secure-store",
       "expo-apple-authentication",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

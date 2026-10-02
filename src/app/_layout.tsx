@@ -1,12 +1,14 @@
 import "@/global.css";
 
-import { ClerkProvider, useAuth } from "@clerk/expo";
+import { ClerkProvider, useAuth, useUser } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { useFonts } from "expo-font";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { PostHogProvider } from "posthog-react-native";
 import { useEffect, useRef } from "react";
 
+import { posthog } from "@/lib/posthog";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 // Keep the splash visible until fonts, saved language and Clerk are ready.
@@ -32,16 +34,25 @@ export default function RootLayout() {
     return null;
   }
 
+  const navigator = <RootNavigator />;
+
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <RootNavigator />
+      {posthog ? (
+        <PostHogProvider client={posthog}>{navigator}</PostHogProvider>
+      ) : (
+        navigator
+      )}
     </ClerkProvider>
   );
 }
 
 function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded: isUserLoaded, user } = useUser();
   const wasSignedIn = useRef(isSignedIn);
+  const identifiedUserId = useRef<string | null>(null);
+  const hasResolvedPostHogIdentity = useRef(false);
   const hasLanguage = useLanguageStore((state) => state.selectedLanguage !== null);
   const hadLanguage = useRef(hasLanguage);
 
@@ -50,6 +61,42 @@ function RootNavigator() {
       SplashScreen.hideAsync();
     }
   }, [isLoaded]);
+
+  // Clerk's user ID is stable, unlike email and names, and persists identity for all later telemetry.
+  useEffect(() => {
+    if (!isLoaded || !isUserLoaded) {
+      return;
+    }
+
+    if (!isSignedIn || !user) {
+      if (!hasResolvedPostHogIdentity.current || identifiedUserId.current) {
+        posthog?.reset();
+      }
+      identifiedUserId.current = null;
+      hasResolvedPostHogIdentity.current = true;
+      return;
+    }
+
+    if (identifiedUserId.current === user.id) {
+      return;
+    }
+
+    if (identifiedUserId.current) {
+      posthog?.reset();
+    }
+
+    posthog?.identify(user.id, {
+      $set: {
+        ...(user.primaryEmailAddress?.emailAddress
+          ? { email: user.primaryEmailAddress.emailAddress }
+          : {}),
+        ...(user.firstName ? { first_name: user.firstName } : {}),
+        ...(user.lastName ? { last_name: user.lastName } : {}),
+      },
+    });
+    identifiedUserId.current = user.id;
+    hasResolvedPostHogIdentity.current = true;
+  }, [isLoaded, isSignedIn, isUserLoaded, user]);
 
   // Signing out goes to Sign Up; a signed-out app launch still starts on onboarding.
   useEffect(() => {

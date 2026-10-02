@@ -596,7 +596,11 @@ export function getLessonById(id: string) {
 }
 
 // Lessons are taken in unit order, so the next one is right after the completed ones.
-export function getCurrentLesson(languageCode: LanguageCode, completedLessonCount: number) {
+// Returns null once every lesson in the path is completed.
+export function getCurrentLesson(
+  languageCode: LanguageCode,
+  completedLessonCount: number,
+): Lesson | null {
   const path = getUnitsByLanguage(languageCode).flatMap((unit) => getLessonsByUnit(unit.id));
-  return path[Math.min(completedLessonCount, path.length - 1)];
+  return completedLessonCount < path.length ? path[completedLessonCount] : null;
 }

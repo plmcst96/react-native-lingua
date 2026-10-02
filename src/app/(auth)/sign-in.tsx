@@ -17,6 +17,7 @@ import AuthInput from "@/components/AuthInput";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 import VerificationCodeModal from "@/components/VerificationCodeModal";
 import { logClerkError } from "@/lib/clerk";
+import { posthog } from "@/lib/posthog";
 
 export default function SignIn() {
   const { signIn, fetchStatus } = useSignIn();
@@ -37,6 +38,7 @@ export default function SignIn() {
       return;
     }
 
+    posthog?.capture("sign_in_code_requested");
     setCodeError(null);
     setIsVerifying(true);
   }
@@ -63,6 +65,7 @@ export default function SignIn() {
       return false;
     }
 
+    posthog?.capture("sign_in_completed");
     return true;
   }
 

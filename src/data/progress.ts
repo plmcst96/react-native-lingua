@@ -4,5 +4,5 @@ export const progress = {
   xpToday: 15,
   dailyGoalXp: 20,
   completedLessonCount: 2,
-  completedPlanItemIds: ["lesson"],
+  completedPlanItemIds: ["es-u2-l1:lesson"], // "<lessonId>:<plan item id>"
 };
