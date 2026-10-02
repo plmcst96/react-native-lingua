@@ -1,3 +1,4 @@
+import { getUnitsByLanguage } from "@/data/units";
 import type { LanguageCode, Lesson } from "@/types/learning";
 
 export const lessons: Lesson[] = [
@@ -592,4 +593,10 @@ export function getLessonsByUnit(unitId: string) {
 
 export function getLessonById(id: string) {
   return lessons.find((lesson) => lesson.id === id);
+}
+
+// Lessons are taken in unit order, so the next one is right after the completed ones.
+export function getCurrentLesson(languageCode: LanguageCode, completedLessonCount: number) {
+  const path = getUnitsByLanguage(languageCode).flatMap((unit) => getLessonsByUnit(unit.id));
+  return path[Math.min(completedLessonCount, path.length - 1)];
 }

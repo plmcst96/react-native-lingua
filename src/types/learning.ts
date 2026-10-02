@@ -6,12 +6,16 @@ export type Language = {
   nativeName: string;
   flagUrl: string;
   learners: string; // display value, e.g. "28.4M"
+  greeting: string; // e.g. "Hola", shown on the home screen
 };
+
+export type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
 export type Unit = {
   id: string;
   languageCode: LanguageCode;
   order: number;
+  level: CEFRLevel;
   title: string;
   description: string;
 };

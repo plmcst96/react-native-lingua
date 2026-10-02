@@ -8,6 +8,7 @@ export const languages: Language[] = [
     nativeName: "Español",
     flagUrl: "https://flagcdn.com/w160/es.png",
     learners: "28.4M",
+    greeting: "Hola",
   },
   {
     code: "fr",
@@ -15,6 +16,7 @@ export const languages: Language[] = [
     nativeName: "Français",
     flagUrl: "https://flagcdn.com/w160/fr.png",
     learners: "19.4M",
+    greeting: "Bonjour",
   },
   {
     code: "ja",
@@ -22,6 +24,7 @@ export const languages: Language[] = [
     nativeName: "日本語",
     flagUrl: "https://flagcdn.com/w160/jp.png",
     learners: "12.7M",
+    greeting: "こんにちは",
   },
   {
     code: "ko",
@@ -29,6 +32,7 @@ export const languages: Language[] = [
     nativeName: "한국어",
     flagUrl: "https://flagcdn.com/w160/kr.png",
     learners: "9.3M",
+    greeting: "안녕하세요",
   },
   {
     code: "de",
@@ -36,6 +40,7 @@ export const languages: Language[] = [
     nativeName: "Deutsch",
     flagUrl: "https://flagcdn.com/w160/de.png",
     learners: "8.1M",
+    greeting: "Hallo",
   },
   {
     code: "zh",
@@ -43,6 +48,7 @@ export const languages: Language[] = [
     nativeName: "中文",
     flagUrl: "https://flagcdn.com/w160/cn.png",
     learners: "7.4M",
+    greeting: "你好",
   },
   {
     code: "it",
@@ -50,6 +56,7 @@ export const languages: Language[] = [
     nativeName: "Italiano",
     flagUrl: "https://flagcdn.com/w160/it.png",
     learners: "6.2M",
+    greeting: "Ciao",
   },
   {
     code: "en",
@@ -57,6 +64,7 @@ export const languages: Language[] = [
     nativeName: "English",
     flagUrl: "https://flagcdn.com/w160/gb.png",
     learners: "5.8M",
+    greeting: "Hello",
   },
 ];
 

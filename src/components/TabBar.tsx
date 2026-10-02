@@ -1,17 +1,22 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { BottomTabBarProps } from "expo-router/js-tabs";
-import { type ComponentProps, useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { type LayoutChangeEvent, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
-  Easing,
   useAnimatedStyle,
   useSharedValue,
+  withSequence,
+  withSpring,
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const BAR_HEIGHT = 72;
 const CIRCLE_SIZE = 56;
+
+// Low damping makes the circle overshoot the tab and bounce back.
+const SLIDE_SPRING = { damping: 12, stiffness: 180, mass: 1 };
+const POP_SPRING = { damping: 8, stiffness: 250, mass: 1 };
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
 
@@ -31,18 +36,21 @@ export default function TabBar({ state, descriptors, navigation }: BottomTabBarP
   const insets = useSafeAreaInsets();
   const [tabWidth, setTabWidth] = useState(0);
   const circleX = useSharedValue(0);
+  const circleScale = useSharedValue(1);
+  const previousIndex = useRef(state.index);
 
   useEffect(() => {
-    circleX.set(
-      withTiming(getCircleX(state.index, tabWidth), {
-        duration: 260,
-        easing: Easing.bezier(0.4, 0, 0.2, 1),
-      }),
-    );
-  }, [state.index, tabWidth, circleX]);
+    circleX.set(withSpring(getCircleX(state.index, tabWidth), SLIDE_SPRING));
+
+    // Only pop on a real tab change, not on the first layout.
+    if (previousIndex.current !== state.index) {
+      circleScale.set(withSequence(withTiming(0.8, { duration: 100 }), withSpring(1, POP_SPRING)));
+      previousIndex.current = state.index;
+    }
+  }, [state.index, tabWidth, circleX, circleScale]);
 
   const circleStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: circleX.get() }],
+    transform: [{ translateX: circleX.get() }, { scale: circleScale.get() }],
   }));
 
   // Jump straight to the first position so the circle doesn't slide in from the left edge.
