@@ -89,14 +89,7 @@ export default function LanguageSelection() {
           placeholderTextColor="#6b7280"
           autoCorrect={false}
           returnKeyType="search"
-          style={{
-            flex: 1,
-            marginLeft: 12,
-            padding: 0,
-            fontFamily: "Poppins-Regular",
-            fontSize: 16,
-            color: "#0d132b",
-          }}
+          className="ml-3 flex-1 p-0 font-poppins text-base text-text-primary"
         />
       </View>
 

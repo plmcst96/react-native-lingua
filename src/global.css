@@ -146,6 +146,18 @@
   color: var(--color-text-secondary);
 }
 
+@utility tab-bar {
+  background-color: var(--color-background);
+  box-shadow: 0px -4px 24px rgba(13, 19, 43, 0.06);
+}
+
+@utility tab-bar__label {
+  font-family: var(--font-poppins-medium);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+}
+
 @utility button__label {
   font-family: var(--font-poppins-semibold);
   font-size: 18px;
