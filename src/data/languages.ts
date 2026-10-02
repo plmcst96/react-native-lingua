@@ -61,6 +61,7 @@ export const languages: Language[] = [
   },
 ];
 
+/** Return the first language with the exact code, or undefined if none matches. */
 export function getLanguageByCode(code: LanguageCode) {
   return languages.find((language) => language.code === code);
 }

@@ -38,6 +38,10 @@ export default function RootLayout() {
   );
 }
 
+/**
+ * Render routes allowed by the current session, or nothing while auth is loading.
+ * Hide the splash screen once auth loads and redirect to sign-up on sign-out.
+ */
 function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
   const wasSignedIn = useRef(isSignedIn);

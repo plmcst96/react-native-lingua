@@ -4,8 +4,10 @@ import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
-// Home route (/). Only reachable when signed in — see the guards in _layout.tsx.
-// Signed-out users land directly on /onboarding.
+/**
+ * Home route (/), with the user's email, language selection navigation, and sign-out.
+ * Only reachable when signed in; _layout.tsx sends signed-out arrivals to /onboarding.
+ */
 export default function Index() {
   const { signOut } = useClerk();
   const { user } = useUser();

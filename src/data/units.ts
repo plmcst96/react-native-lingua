@@ -81,12 +81,17 @@ export const units: Unit[] = [
   },
 ];
 
+/**
+ * Return matching units sorted by ascending order, or an empty array if none match.
+ * Sorting leaves the source array unchanged; unit objects are shared with it.
+ */
 export function getUnitsByLanguage(languageCode: LanguageCode) {
   return units
     .filter((unit) => unit.languageCode === languageCode)
     .sort((a, b) => a.order - b.order);
 }
 
+/** Return the first unit with the exact ID, or undefined if none matches. */
 export function getUnitById(id: string) {
   return units.find((unit) => unit.id === id);
 }

@@ -18,6 +18,11 @@ import { images } from "@/constants/images";
 import { languages } from "@/data/languages";
 import type { LanguageCode } from "@/types/learning";
 
+/**
+ * Show languages filtered by a trimmed, case-insensitive English or native name match.
+ * An empty search shows all languages. Selection starts at Spanish and stays local
+ * to this screen; Continue navigates back (or to /) without persisting the choice.
+ */
 export default function LanguageSelection() {
   const { width } = useWindowDimensions();
   const [query, setQuery] = useState("");
@@ -35,6 +40,7 @@ export default function LanguageSelection() {
   // so it's drawn a bit wider than the screen and cropped at the bottom.
   const earthSize = width * 1.1;
 
+  /** Navigate back when history is available; otherwise replace this route with /. */
   function goBack() {
     if (router.canGoBack()) {
       router.back();
