@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   Image,
@@ -90,7 +91,11 @@ export default function Onboarding() {
       </View>
 
       {/* Call to action */}
-      <TouchableOpacity activeOpacity={0.85} className="button--primary mx-6 mb-5">
+      <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={() => router.push("/sign-up")}
+        className="button--primary mx-6 mb-5"
+      >
         <Text className="button__label">Get Started</Text>
         {/* Chevron: a square with two borders, rotated 45° */}
         <View className="absolute right-9 size-[11px] rotate-45 border-r-2 border-t-2 border-white" />
