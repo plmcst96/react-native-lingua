@@ -1,9 +1,13 @@
 import { useClerk, useUser } from "@clerk/expo";
+import { router } from "expo-router";
+import { SymbolView } from "expo-symbols";
 import { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
-// Home route (/). Only reachable when signed in — see the guards in _layout.tsx.
-// Signed-out users land directly on /onboarding.
+/**
+ * Render the signed-in home route with email, language selection, and sign-out.
+ * The guards in _layout.tsx send signed-out users to /onboarding on app entry.
+ */
 export default function Index() {
   const { signOut } = useClerk();
   const { user } = useUser();
@@ -25,9 +29,24 @@ export default function Index() {
 
       <TouchableOpacity
         activeOpacity={0.85}
+        onPress={() => router.push("/language-selection")}
+        className="button--outline mt-8 w-full px-5"
+      >
+        <SymbolView
+          name={{ ios: "globe", android: "language" }}
+          size={22}
+          tintColor="#0d132b"
+        />
+        <Text className="ml-3 font-poppins-medium text-base text-text-primary">
+          Choose a language
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        activeOpacity={0.85}
         onPress={handleSignOut}
         disabled={isSigningOut}
-        className="button--gradient mt-8 w-full"
+        className="button--gradient mt-4 w-full"
       >
         {isSigningOut ? (
           <ActivityIndicator color="#ffffff" />
