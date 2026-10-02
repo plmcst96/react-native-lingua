@@ -1,7 +1,6 @@
 import type { LanguageCode, Lesson } from "@/types/learning";
 
 export const lessons: Lesson[] = [
-  // ─── Spanish ───────────────────────────────────────────────
   {
     id: "es-u1-l1",
     unitId: "es-u1",
@@ -134,8 +133,6 @@ export const lessons: Lesson[] = [
       openingLine: "Welcome to the café! Let's learn how to order. Try saying 'café con leche'.",
     },
   },
-
-  // ─── French ────────────────────────────────────────────────
   {
     id: "fr-u1-l1",
     unitId: "fr-u1",
@@ -224,8 +221,6 @@ export const lessons: Lesson[] = [
       openingLine: "Welcome to the bakery! Let's order something tasty. Try saying 'une baguette'.",
     },
   },
-
-  // ─── Japanese ──────────────────────────────────────────────
   {
     id: "ja-u1-l1",
     unitId: "ja-u1",
@@ -317,8 +312,6 @@ export const lessons: Lesson[] = [
       openingLine: "Welcome! Today you'll introduce yourself in Japanese. Let's start with 'hajimemashite'.",
     },
   },
-
-  // ─── Korean ────────────────────────────────────────────────
   {
     id: "ko-u1-l1",
     unitId: "ko-u1",
@@ -362,8 +355,6 @@ export const lessons: Lesson[] = [
       openingLine: "Hi! Let's learn a polite Korean hello. Listen: 'annyeonghaseyo'.",
     },
   },
-
-  // ─── German ────────────────────────────────────────────────
   {
     id: "de-u1-l1",
     unitId: "de-u1",
@@ -408,8 +399,6 @@ export const lessons: Lesson[] = [
       openingLine: "Hi! Let's learn your first German greeting. It's easy: 'hallo'.",
     },
   },
-
-  // ─── Chinese ───────────────────────────────────────────────
   {
     id: "zh-u1-l1",
     unitId: "zh-u1",
@@ -454,8 +443,6 @@ export const lessons: Lesson[] = [
       openingLine: "Hi! Let's learn to say hello in Chinese. Listen carefully: 'nǐ hǎo'.",
     },
   },
-
-  // ─── Italian ───────────────────────────────────────────────
   {
     id: "it-u1-l1",
     unitId: "it-u1",
@@ -545,7 +532,6 @@ export const lessons: Lesson[] = [
     },
   },
 
-  // ─── English ───────────────────────────────────────────────
   // The app's base language is English, so `translation` here holds a
   // simple English explanation instead of a word-for-word translation.
   {
@@ -594,25 +580,16 @@ export const lessons: Lesson[] = [
   },
 ];
 
-/**
- * Return matching lessons in their source order, or an empty array if none match.
- * The array is new; its lesson objects are shared with the source data.
- */
 export function getLessonsByLanguage(languageCode: LanguageCode) {
   return lessons.filter((lesson) => lesson.languageCode === languageCode);
 }
 
-/**
- * Return lessons for the exact unit ID in ascending order, or an empty array.
- * Sorting uses each lesson's order field in a new array; lesson objects are shared.
- */
 export function getLessonsByUnit(unitId: string) {
   return lessons
     .filter((lesson) => lesson.unitId === unitId)
     .sort((a, b) => a.order - b.order);
 }
 
-/** Return the first lesson with the exact ID, or undefined if absent. */
 export function getLessonById(id: string) {
   return lessons.find((lesson) => lesson.id === id);
 }

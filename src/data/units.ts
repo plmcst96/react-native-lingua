@@ -1,7 +1,6 @@
 import type { LanguageCode, Unit } from "@/types/learning";
 
 export const units: Unit[] = [
-  // Spanish
   {
     id: "es-u1",
     languageCode: "es",
@@ -16,8 +15,6 @@ export const units: Unit[] = [
     title: "At the Café",
     description: "Order drinks and pay the bill like a local.",
   },
-
-  // French
   {
     id: "fr-u1",
     languageCode: "fr",
@@ -25,8 +22,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Greet people and buy bread at the bakery.",
   },
-
-  // Japanese
   {
     id: "ja-u1",
     languageCode: "ja",
@@ -34,8 +29,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Learn everyday greetings and introduce yourself.",
   },
-
-  // Korean
   {
     id: "ko-u1",
     languageCode: "ko",
@@ -43,8 +36,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Learn polite greetings and introduce yourself.",
   },
-
-  // German
   {
     id: "de-u1",
     languageCode: "de",
@@ -52,8 +43,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Greet people and introduce yourself.",
   },
-
-  // Chinese
   {
     id: "zh-u1",
     languageCode: "zh",
@@ -61,8 +50,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Learn simple greetings and introduce yourself.",
   },
-
-  // Italian
   {
     id: "it-u1",
     languageCode: "it",
@@ -70,8 +57,6 @@ export const units: Unit[] = [
     title: "Basics",
     description: "Greet people and order at an Italian bar.",
   },
-
-  // English
   {
     id: "en-u1",
     languageCode: "en",
@@ -81,17 +66,12 @@ export const units: Unit[] = [
   },
 ];
 
-/**
- * Return units for the language in ascending order, or an empty array if none match.
- * Sorting uses each unit's order field in a new array; unit objects are shared.
- */
 export function getUnitsByLanguage(languageCode: LanguageCode) {
   return units
     .filter((unit) => unit.languageCode === languageCode)
     .sort((a, b) => a.order - b.order);
 }
 
-/** Return the first unit with the exact ID, or undefined if absent. */
 export function getUnitById(id: string) {
   return units.find((unit) => unit.id === id);
 }

@@ -1,58 +1,68 @@
-import { useClerk, useUser } from "@clerk/expo";
+import { useClerk } from "@clerk/expo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { SymbolView } from "expo-symbols";
 import { useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 
-/**
- * Render the signed-in home route with email, language selection, and sign-out.
- * The guards in _layout.tsx send signed-out users to /onboarding on app entry.
- */
+import { getLanguageByCode } from "@/data/languages";
+import { useLanguageStore } from "@/store/useLanguageStore";
+
 export default function Index() {
   const { signOut } = useClerk();
-  const { user } = useUser();
+  const selectedLanguage = useLanguageStore((state) => state.selectedLanguage);
+  const clearSelectedLanguage = useLanguageStore((state) => state.clearSelectedLanguage);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  // Ending the session flips the guards in _layout.tsx,
-  // which then sends the user back to the Sign Up screen.
+  const language = selectedLanguage ? getLanguageByCode(selectedLanguage) : undefined;
+
   async function handleSignOut() {
     setIsSigningOut(true);
     await signOut();
   }
 
-  return (
-    <View className="flex-1 items-center justify-center bg-white px-8">
-      <Text className="heading--h1 text-lingua-deep-purple">Lingua</Text>
-      <Text className="body--md mt-2 text-text-secondary">
-        {user?.primaryEmailAddress?.emailAddress}
-      </Text>
+  // Without a language, the guard in _layout.tsx sends the user to language selection.
+  async function handleClearLanguage() {
+    clearSelectedLanguage();
+    await AsyncStorage.clear();
+  }
 
+  return (
+    <View className="flex-1 items-center justify-center bg-[#f5f3f4] px-8">
+      <Text className="font-poppins-bold text-[30px] leading-9 text-lingua-purple">Lingua</Text>
+      {language && (
+        <>
+          <Image source={{ uri: language.flagUrl }} className="mt-6 size-[74px] rounded-full" />
+          <Text className="mt-2 font-poppins-semibold text-[22px] leading-[29px] text-text-primary">
+            {language.name}
+          </Text>
+          <Text className="body--md mt-3 text-text-secondary">{language.nativeName}</Text>
+        </>
+      )}
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={() => router.push("/language-selection")}
-        className="button--outline mt-8 w-full px-5"
+        className="mt-5 h-14 items-center justify-center rounded-2xl bg-lingua-purple px-7"
       >
-        <SymbolView
-          name={{ ios: "globe", android: "language" }}
-          size={22}
-          tintColor="#0d132b"
-        />
-        <Text className="ml-3 font-poppins-medium text-base text-text-primary">
-          Choose a language
-        </Text>
+        <Text className="button__label">Choose a Language</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
-        activeOpacity={0.85}
+        activeOpacity={0.6}
         onPress={handleSignOut}
         disabled={isSigningOut}
-        className="button--gradient mt-4 w-full"
+        className="mt-5 h-11 justify-center px-4"
       >
         {isSigningOut ? (
-          <ActivityIndicator color="#ffffff" />
+          <ActivityIndicator color="#6b7280" />
         ) : (
-          <Text className="button__label">Sign Out</Text>
+          <Text className="font-poppins text-base text-text-secondary">Sign Out</Text>
         )}
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={handleClearLanguage}
+        className="mt-[22px] h-11 justify-center px-4"
+      >
+        <Text className="font-poppins text-base text-[#a96070]">Clear Language (Test)</Text>
       </TouchableOpacity>
     </View>
   );

@@ -434,6 +434,17 @@ Refactor only when needed.
 
 ---
 
+## Code Comments Rule
+
+Write few comments.
+
+- Let clear names and simple code explain what the code does.
+- Add a comment only when the "why" is not obvious (e.g. a workaround, a non-obvious constraint, a timing issue).
+- Keep comments short: one line when possible.
+- Do not comment obvious code, restate what the code does, or narrate each step.
+
+---
+
 ## Component Creation Rule
 
 Only create reusable components when necessary.

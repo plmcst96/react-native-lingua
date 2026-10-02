@@ -18,17 +18,14 @@ const CODE_LENGTH = 6;
 type VerificationCodeModalProps = {
   visible: boolean;
   email: string;
-  // Message from Clerk when the code is wrong or expired.
   error: string | null;
   onClose: () => void;
-  // Called as soon as the last digit is typed. Resolves to true if the code was accepted.
+  // Resolves to true if the code was accepted.
   onComplete: (code: string) => Promise<boolean>;
   onResend: () => void;
 };
 
-// Bottom sheet asking for the 6-digit code Clerk emailed to the user.
-// One invisible TextInput sits on top of the six boxes and holds the real value,
-// so typing, deleting and pasting a code all work like a normal input.
+// One invisible TextInput over the six boxes holds the value, so typing and pasting work normally.
 export default function VerificationCodeModal({
   visible,
   email,
@@ -54,7 +51,6 @@ export default function VerificationCodeModal({
     if (isAccepted) {
       Keyboard.dismiss();
     } else {
-      // Wrong code: clear the boxes so the user can try again.
       setCode("");
       inputRef.current?.focus();
     }
@@ -84,7 +80,6 @@ export default function VerificationCodeModal({
           backgroundColor: "rgba(13, 19, 43, 0.45)",
         }}
       >
-        {/* Tapping the dimmed background closes the sheet */}
         <Pressable className="absolute inset-0" onPress={handleClose} />
 
         <View className="rounded-t-[28px] bg-background px-6 pb-8 pt-3">
@@ -155,7 +150,6 @@ export default function VerificationCodeModal({
             />
           </View>
 
-          {/* Status: checking spinner, or error message + resend link */}
           <View className="mt-4 min-h-[22px] items-center">
             {isChecking ? (
               <ActivityIndicator color="#5b3bf6" />

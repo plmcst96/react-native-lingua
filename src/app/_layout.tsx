@@ -7,8 +7,9 @@ import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useRef } from "react";
 
-// Keep the splash screen visible until Poppins and Clerk are ready,
-// so text never flashes in the system font and the right screen shows first.
+import { useLanguageStore } from "@/store/useLanguageStore";
+
+// Keep the splash visible until fonts, saved language and Clerk are ready.
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -18,33 +19,31 @@ if (!publishableKey) {
 }
 
 export default function RootLayout() {
-  // The names must match the --font-* tokens in src/global.css.
+  // Names must match the --font-* tokens in global.css.
   const [fontsLoaded, fontError] = useFonts({
     "Poppins-Regular": require("@/assets/fonts/Poppins-Regular.ttf"),
     "Poppins-Medium": require("@/assets/fonts/Poppins-Medium.ttf"),
     "Poppins-SemiBold": require("@/assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Bold": require("@/assets/fonts/Poppins-Bold.ttf"),
   });
+  const hasHydrated = useLanguageStore((state) => state.hasHydrated);
 
-  if (!fontsLoaded && !fontError) {
+  if ((!fontsLoaded && !fontError) || !hasHydrated) {
     return null;
   }
 
   return (
-    // tokenCache stores the session in expo-secure-store, so users stay signed in.
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <RootNavigator />
     </ClerkProvider>
   );
 }
 
-/**
- * Render routes guarded by sign-in state, or nothing while auth is loading.
- * Hide the splash screen once auth loads and navigate to Sign Up on sign-out.
- */
 function RootNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
   const wasSignedIn = useRef(isSignedIn);
+  const hasLanguage = useLanguageStore((state) => state.selectedLanguage !== null);
+  const hadLanguage = useRef(hasLanguage);
 
   useEffect(() => {
     if (isLoaded) {
@@ -52,8 +51,7 @@ function RootNavigator() {
     }
   }, [isLoaded]);
 
-  // Signing out from inside the app goes straight to Sign Up.
-  // (Opening the app while signed out still starts on onboarding.)
+  // Signing out goes to Sign Up; a signed-out app launch still starts on onboarding.
   useEffect(() => {
     if (wasSignedIn.current && !isSignedIn) {
       router.replace("/sign-up");
@@ -61,17 +59,26 @@ function RootNavigator() {
     wasSignedIn.current = isSignedIn;
   }, [isSignedIn]);
 
+  // Home only exists after the guard re-renders, so the first-pick redirect happens here.
+  useEffect(() => {
+    if (isSignedIn && !hadLanguage.current && hasLanguage) {
+      router.replace("/");
+    }
+    hadLanguage.current = hasLanguage;
+  }, [isSignedIn, hasLanguage]);
+
   if (!isLoaded) {
     return null;
   }
 
-  // Protected screens only exist while their guard is true.
-  // Signing in or out flips the guards and Expo Router moves the user automatically:
-  // signed out → onboarding (or Sign Up right after a sign out), signed in → home (/).
+  // When a guard turns false, Expo Router redirects to the first available screen.
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isSignedIn}>
+      <Stack.Protected guard={isSignedIn && hasLanguage}>
         <Stack.Screen name="index" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={isSignedIn}>
         <Stack.Screen name="language-selection" />
       </Stack.Protected>
 

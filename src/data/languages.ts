@@ -1,7 +1,6 @@
 import type { Language, LanguageCode } from "@/types/learning";
 
-// Flag images come from flagcdn.com, which uses country codes (e.g. "jp"),
-// not language codes (e.g. "ja").
+// flagcdn.com uses country codes (e.g. "jp"), not language codes (e.g. "ja").
 export const languages: Language[] = [
   {
     code: "es",
@@ -61,7 +60,6 @@ export const languages: Language[] = [
   },
 ];
 
-/** Return the first language with the exact language code, or undefined if absent. */
 export function getLanguageByCode(code: LanguageCode) {
   return languages.find((language) => language.code === code);
 }
