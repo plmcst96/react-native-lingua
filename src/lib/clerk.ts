@@ -19,3 +19,7 @@ export function isCancelledError(error: unknown): boolean {
   }
   return false;
 }
+
+export function isAppleUnknownError(error: unknown): boolean {
+  return Boolean(error && typeof error === "object" && "code" in error && error.code === "ERR_REQUEST_UNKNOWN");
+}

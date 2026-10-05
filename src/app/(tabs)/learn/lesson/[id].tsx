@@ -2,13 +2,24 @@ import { useUser } from "@clerk/expo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { type ComponentProps, Fragment, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "@/constants/images";
 import { getLanguageByCode } from "@/data/languages";
 import { getLessonById } from "@/data/lessons";
 import { getUnitById } from "@/data/units";
+import { type LessonCallStatus, useLessonCall } from "@/hooks/useLessonCall";
+import { type TeacherAgentStatus, useTeacherAgent } from "@/hooks/useTeacherAgent";
+import { useLanguageStore } from "@/store/useLanguageStore";
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
 
@@ -16,6 +27,12 @@ type TeacherLine = {
   text: string;
   translation?: string;
   pronunciation?: string;
+};
+
+type StageNotice = {
+  kind: "loading" | "error" | "ended";
+  message?: string;
+  action?: { label: string; onPress: () => void };
 };
 
 type Control = {
@@ -32,15 +49,33 @@ const feedback = [
   { label: "Grammar", value: "Good", colorClassName: "text-[#4c45e6]" },
 ];
 
+const callStatusDisplay: Record<LessonCallStatus, { label: string; dotClassName: string }> = {
+  loading: { label: "Starting…", dotClassName: "bg-warning" },
+  connecting: { label: "Connecting…", dotClassName: "bg-warning" },
+  joined: { label: "Online", dotClassName: "bg-success" },
+  error: { label: "Connection failed", dotClassName: "bg-error" },
+  ended: { label: "Call ended", dotClassName: "bg-text-secondary" },
+};
+
+const teacherStatusDisplay: Record<TeacherAgentStatus, { label: string; dotClassName: string }> = {
+  idle: { label: "Getting ready…", dotClassName: "bg-warning" },
+  connecting: { label: "Teacher joining…", dotClassName: "bg-warning" },
+  connected: { label: "Online", dotClassName: "bg-success" },
+  failed: { label: "Teacher offline", dotClassName: "bg-error" },
+};
+
 export default function AudioLessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { user } = useUser();
-  const [isMicOn, setIsMicOn] = useState(true);
+  const selectedLanguage = useLanguageStore((state) => state.selectedLanguage);
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [showSubtitles, setShowSubtitles] = useState(true);
   const [lineIndex, setLineIndex] = useState(0);
 
   const lesson = getLessonById(id);
+  const { call, status, isLive, errorMessage, isMicOn, toggleMic, endCall, restartCall } =
+    useLessonCall(lesson?.id, selectedLanguage);
+  const { status: teacherStatus, stopAgent, retryAgent } = useTeacherAgent(call, isLive);
 
   if (!lesson) {
     return (
@@ -61,6 +96,14 @@ export default function AudioLessonScreen() {
   const unit = getUnitById(lesson.unitId);
   const teacherLines: TeacherLine[] = [{ text: lesson.aiTeacher.openingLine }, ...lesson.phrases];
   const currentLine = teacherLines[lineIndex];
+  const isMuted = status === "joined" && !isMicOn;
+  const headerStatus = isMuted
+    ? { label: "Mic muted", dotClassName: "bg-text-secondary" }
+    : status === "joined"
+      ? teacherStatusDisplay[teacherStatus]
+      : callStatusDisplay[status];
+  const stageNotice = getStageNotice();
+  const userLabel = user?.firstName ?? user?.username ?? "You";
 
   const controls: Control[] = [
     {
@@ -73,7 +116,7 @@ export default function AudioLessonScreen() {
       label: "Mic",
       icon: isMicOn ? "mic" : "mic-off",
       isOn: isMicOn,
-      onPress: () => setIsMicOn(!isMicOn),
+      onPress: toggleMic,
     },
     {
       label: "Subtitles",
@@ -83,8 +126,50 @@ export default function AudioLessonScreen() {
     },
   ];
 
+  function getStageNotice(): StageNotice | undefined {
+    switch (status) {
+      case "loading":
+        return { kind: "loading", message: "Starting your lesson call…" };
+      case "connecting":
+        return { kind: "loading", message: "Connecting to your teacher…" };
+      case "error":
+        return {
+          kind: "error",
+          message: errorMessage,
+          action: { label: "Try again", onPress: restartCall },
+        };
+      case "ended":
+        return {
+          kind: "ended",
+          message: "The lesson call has ended.",
+          action: { label: "Start again", onPress: restartCall },
+        };
+    }
+    if (teacherStatus === "failed") {
+      return {
+        kind: "error",
+        message: "Your teacher couldn't join.",
+        action: { label: "Try again", onPress: retryAgent },
+      };
+    }
+    if (teacherStatus !== "connected") {
+      return { kind: "loading", message: "Lingo is joining your lesson…" };
+    }
+    return undefined;
+  }
+
   function showNextLine() {
     setLineIndex(Math.min(lineIndex + 1, teacherLines.length - 1));
+  }
+
+  // Before the call exists or after it's over, End Call just leaves the screen.
+  function handleEndCall() {
+    if (status === "joined" || status === "connecting") {
+      stopAgent();
+      endCall();
+    } else {
+      router.back();
+    }
   }
 
   return (
@@ -96,11 +181,9 @@ export default function AudioLessonScreen() {
         <View className="ml-[11px] flex-1">
           <Text className="heading--h3">AI Teacher</Text>
           <View className="mt-0.5 flex-row items-center">
-            <View
-              className={`size-2.5 rounded-full ${isMicOn ? "bg-success" : "bg-text-secondary"}`}
-            />
+            <View className={`size-2.5 rounded-full ${headerStatus.dotClassName}`} />
             <Text className="ml-1.5 font-poppins text-[15px] leading-6 text-text-secondary">
-              {isMicOn ? "Online" : "Mic muted"}
+              {headerStatus.label}
             </Text>
           </View>
         </View>
@@ -155,6 +238,25 @@ export default function AudioLessonScreen() {
                 </Text>
               </View>
             </View>
+            {stageNotice && (
+              <View className="audio-lesson__call-status" accessibilityLiveRegion="polite">
+                {stageNotice.kind === "loading" && <ActivityIndicator size="small" color="#5b3bf6" />}
+                {stageNotice.kind === "error" && (
+                  <Ionicons name="alert-circle" size={18} color="#ff4d4f" />
+                )}
+                {stageNotice.kind === "ended" && <Ionicons name="call" size={16} color="#6b7280" />}
+                <Text className="ml-2 shrink font-poppins-medium text-[13px] leading-5 text-text-primary">
+                  {stageNotice.message}
+                </Text>
+                {stageNotice.action && (
+                  <TouchableOpacity hitSlop={8} onPress={stageNotice.action.onPress} className="ml-3">
+                    <Text className="font-poppins-semibold text-[13px] leading-5 text-lingua-deep-purple">
+                      {stageNotice.action.label}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
           </View>
           <View className="audio-lesson__self-view">
             {isCameraOn && user?.imageUrl ? (
@@ -164,6 +266,15 @@ export default function AudioLessonScreen() {
                 <Ionicons name="videocam-off" size={26} color="#ffffff" />
               </View>
             )}
+            <View className="audio-lesson__self-name">
+              {isMuted && <Ionicons name="mic-off" size={12} color="#ffffff" />}
+              <Text
+                className="shrink font-poppins-medium text-[11px] leading-4 text-white"
+                numberOfLines={1}
+              >
+                {userLabel}
+              </Text>
+            </View>
           </View>
           <TouchableOpacity
             activeOpacity={0.9}
@@ -216,7 +327,7 @@ export default function AudioLessonScreen() {
             ))}
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => router.back()}
+              onPress={handleEndCall}
               accessibilityRole="button"
               accessibilityLabel="End call"
               className="flex-1 items-center"

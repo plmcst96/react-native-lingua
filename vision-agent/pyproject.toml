@@ -1,0 +1,12 @@
+[project]
+name = "vision-agent"
+version = "0.1.0"
+description = "AI language teacher that joins Stream audio calls"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "python-dotenv>=1.2.4",
+    "vision-agents[gemini,getstream,openai]>=0.6.9",
+]
+
+[tool.uv]
+required-environments = ["sys_platform == 'darwin' and platform_machine == 'x86_64'"]
