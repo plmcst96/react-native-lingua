@@ -7,7 +7,7 @@ type LessonCardProps = {
   lesson: Lesson;
   number: number;
   status: LessonStatus;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export default function LessonCard({ lesson, number, status, onPress }: LessonCardProps) {
@@ -17,7 +17,9 @@ export default function LessonCard({ lesson, number, status, onPress }: LessonCa
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={onPress}
+      disabled={!onPress}
       accessibilityRole="button"
+      accessibilityState={{ disabled: !onPress }}
       accessibilityLabel={`Lesson ${number}: ${lesson.title}`}
       className={`lesson-card py-3 ${isCurrent ? "lesson-card--current" : "lesson-card--default"}`}
     >

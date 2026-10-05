@@ -2,7 +2,7 @@ import { useUser } from "@clerk/expo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { type ComponentProps, Fragment, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "@/constants/images";
@@ -131,122 +131,136 @@ export default function AudioLessonScreen() {
         </View>
       </View>
       <View className="audio-lesson__stage mx-0.5 flex-1">
-        <View className="flex-1 items-center pt-4">
-          <Image source={images.mascotWelcome} resizeMode="contain" className="h-full w-full" />
-        </View>
-        <View className="absolute left-3.5 right-[128px] top-3.5 items-start">
-          <View className="audio-lesson__lesson-chip">
-            {language && (
-              <Image source={{ uri: language.flagUrl }} className="size-7 rounded-full" />
-            )}
-            <View className="ml-2 shrink">
-              <Text
-                className="font-poppins-semibold text-[13px] leading-5 text-text-primary"
-                numberOfLines={1}
-              >
-                {lesson.title}
-              </Text>
-              <Text className="caption" numberOfLines={1}>
-                {language?.name} • Unit {unit?.order}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View className="audio-lesson__self-view">
-          {isCameraOn && user?.imageUrl ? (
-            <Image source={{ uri: user.imageUrl }} className="size-full" />
-          ) : (
-            <View className="flex-1 items-center justify-center">
-              <Ionicons name="videocam-off" size={26} color="#ffffff" />
-            </View>
-          )}
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={showNextLine}
-          accessibilityHint="Shows the teacher's next line"
-          className="mx-16 -mt-7"
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.stageContent}
         >
-          <View className="absolute -bottom-2 right-6 size-5 rotate-45 rounded-[3px] bg-white" />
-          <View className="audio-lesson__bubble">
-            <View className="flex-1">
-              <Text className="font-poppins text-[18px] leading-[30px] text-text-primary">
-                {currentLine.text}
-              </Text>
-              {showSubtitles && currentLine.pronunciation && (
-                <Text className="font-poppins text-sm leading-[22px] text-text-secondary">
-                  {currentLine.pronunciation}
-                </Text>
+          <View className="min-h-40 flex-1 items-center pt-4">
+            <Image source={images.mascotWelcome} resizeMode="contain" className="h-full w-full" />
+          </View>
+          <View className="absolute left-3.5 right-[128px] top-3.5 items-start">
+            <View className="audio-lesson__lesson-chip">
+              {language && (
+                <Image source={{ uri: language.flagUrl }} className="size-7 rounded-full" />
               )}
-              {showSubtitles && currentLine.translation && (
-                <Text className="font-poppins text-[18px] leading-[30px] text-text-primary">
-                  {currentLine.translation}
+              <View className="ml-2 shrink">
+                <Text
+                  className="font-poppins-semibold text-[13px] leading-5 text-text-primary"
+                  numberOfLines={1}
+                >
+                  {lesson.title}
                 </Text>
-              )}
-            </View>
-            <View className="ml-3">
-              <Ionicons name="volume-high" size={30} color="#5d5ff6" />
+                <Text className="caption" numberOfLines={1}>
+                  {language?.name} • Unit {unit?.order}
+                </Text>
+              </View>
             </View>
           </View>
-        </TouchableOpacity>
-        <View className="mt-3 flex-row px-2.5">
-          {controls.map((control) => (
+          <View className="audio-lesson__self-view">
+            {isCameraOn && user?.imageUrl ? (
+              <Image source={{ uri: user.imageUrl }} className="size-full" />
+            ) : (
+              <View className="flex-1 items-center justify-center">
+                <Ionicons name="videocam-off" size={26} color="#ffffff" />
+              </View>
+            )}
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={showNextLine}
+            accessibilityHint="Shows the teacher's next line"
+            className="mx-16 -mt-7"
+          >
+            <View className="absolute -bottom-2 right-6 size-5 rotate-45 rounded-[3px] bg-white" />
+            <View className="audio-lesson__bubble">
+              <View className="flex-1">
+                <Text className="font-poppins text-[18px] leading-[30px] text-text-primary">
+                  {currentLine.text}
+                </Text>
+                {showSubtitles && currentLine.pronunciation && (
+                  <Text className="font-poppins text-sm leading-[22px] text-text-secondary">
+                    {currentLine.pronunciation}
+                  </Text>
+                )}
+                {showSubtitles && currentLine.translation && (
+                  <Text className="font-poppins text-[18px] leading-[30px] text-text-primary">
+                    {currentLine.translation}
+                  </Text>
+                )}
+              </View>
+              <View className="ml-3">
+                <Ionicons name="volume-high" size={30} color="#5d5ff6" />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <View className="mt-3 flex-row px-2.5">
+            {controls.map((control) => (
+              <TouchableOpacity
+                key={control.label}
+                activeOpacity={0.8}
+                onPress={control.onPress}
+                accessibilityRole="switch"
+                accessibilityState={{ checked: control.isOn }}
+                accessibilityLabel={control.label}
+                className="flex-1 items-center"
+              >
+                <View className="audio-lesson__control">
+                  <Ionicons
+                    name={control.icon}
+                    size={28}
+                    color={control.isOn ? "#1e2350" : "#9ca3af"}
+                  />
+                </View>
+                <Text className="audio-lesson__control-label">{control.label}</Text>
+              </TouchableOpacity>
+            ))}
             <TouchableOpacity
-              key={control.label}
               activeOpacity={0.8}
-              onPress={control.onPress}
-              accessibilityRole="switch"
-              accessibilityState={{ checked: control.isOn }}
-              accessibilityLabel={control.label}
+              onPress={() => router.back()}
+              accessibilityRole="button"
+              accessibilityLabel="End call"
               className="flex-1 items-center"
             >
-              <View className="audio-lesson__control">
-                <Ionicons
-                  name={control.icon}
-                  size={28}
-                  color={control.isOn ? "#1e2350" : "#9ca3af"}
-                />
+              <View className="audio-lesson__control audio-lesson__control--end">
+                <View className="rotate-[135deg]">
+                  <Ionicons name="call" size={28} color="#ffffff" />
+                </View>
               </View>
-              <Text className="audio-lesson__control-label">{control.label}</Text>
+              <Text className="audio-lesson__control-label">End Call</Text>
             </TouchableOpacity>
-          ))}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => router.back()}
-            accessibilityRole="button"
-            accessibilityLabel="End call"
-            className="flex-1 items-center"
+          </View>
+          <View className="audio-lesson__feedback mx-3.5 mt-5">
+            {feedback.map((item, index) => (
+              <Fragment key={item.label}>
+                {index > 0 && <View className="my-[-6px] w-px bg-border" />}
+                <View className="flex-auto gap-2.5 px-5">
+                  <Text className="font-poppins-medium text-sm leading-[22px] text-text-primary">
+                    {item.label}
+                  </Text>
+                  <Text
+                    className={`font-poppins-medium text-sm leading-[22px] ${item.colorClassName}`}
+                  >
+                    {item.value}
+                  </Text>
+                </View>
+              </Fragment>
+            ))}
+          </View>
+          <Text
+            className="mx-6 mb-4 mt-3 text-center font-poppins text-[13px] leading-5 text-text-secondary"
+            numberOfLines={2}
           >
-            <View className="audio-lesson__control audio-lesson__control--end">
-              <View className="rotate-[135deg]">
-                <Ionicons name="call" size={28} color="#ffffff" />
-              </View>
-            </View>
-            <Text className="audio-lesson__control-label">End Call</Text>
-          </TouchableOpacity>
-        </View>
-        <View className="audio-lesson__feedback mx-3.5 mt-5">
-          {feedback.map((item, index) => (
-            <Fragment key={item.label}>
-              {index > 0 && <View className="my-[-6px] w-px bg-border" />}
-              <View className="flex-auto gap-2.5 px-5">
-                <Text className="font-poppins-medium text-sm leading-[22px] text-text-primary">
-                  {item.label}
-                </Text>
-                <Text className={`font-poppins-medium text-sm leading-[22px] ${item.colorClassName}`}>
-                  {item.value}
-                </Text>
-              </View>
-            </Fragment>
-          ))}
-        </View>
-        <Text
-          className="mx-6 mb-4 mt-3 text-center font-poppins text-[13px] leading-5 text-text-secondary"
-          numberOfLines={2}
-        >
-          Goal: {lesson.goal}
-        </Text>
+            Goal: {lesson.goal}
+          </Text>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
 }
+
+// flexGrow lets the mascot fill spare height, then the stage scrolls once content outgrows it.
+const styles = StyleSheet.create({
+  stageContent: {
+    flexGrow: 1,
+  },
+});

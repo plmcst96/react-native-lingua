@@ -111,15 +111,18 @@ export default function Learn() {
         </View>
         {activeTab === "lessons" ? (
           <View className="mt-[19px] gap-2 px-[18px] pb-6">
-            {path.map((lesson, index) => (
-              <LessonCard
-                key={lesson.id}
-                lesson={lesson}
-                number={index + 1}
-                status={getStatus(index)}
-                onPress={() => openLesson(lesson)}
-              />
-            ))}
+            {path.map((lesson, index) => {
+              const status = getStatus(index);
+              return (
+                <LessonCard
+                  key={lesson.id}
+                  lesson={lesson}
+                  number={index + 1}
+                  status={status}
+                  onPress={status === "not-started" ? undefined : () => openLesson(lesson)}
+                />
+              );
+            })}
           </View>
         ) : (
           <View className="items-center px-8 pb-6 pt-12">
