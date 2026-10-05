@@ -1,3 +1,5 @@
+import type { ImageSourcePropType } from "react-native";
+
 export type LanguageCode = "es" | "fr" | "ja" | "ko" | "de" | "zh" | "it" | "en";
 
 export type Language = {
@@ -32,6 +34,8 @@ export type Phrase = {
   pronunciation?: string;
 };
 
+export type LessonStatus = "completed" | "in-progress" | "not-started";
+
 export type ActivityType = "vocabulary" | "listen-and-repeat" | "conversation";
 
 export type Activity = {
@@ -56,6 +60,7 @@ export type Lesson = {
   goal: string;
   durationMinutes: number;
   xp: number;
+  image: ImageSourcePropType;
   vocabulary: VocabularyItem[];
   phrases: Phrase[];
   activities: Activity[];
