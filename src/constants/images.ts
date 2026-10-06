@@ -1,4 +1,6 @@
 import earth from "@/assets/images/earth.png";
+import lessonCafe from "@/assets/images/lesson-cafe.png";
+import lessonHeroCafe from "@/assets/images/lesson-hero-cafe.png";
 import logoApple from "@/assets/images/logo-apple.png";
 import logoFacebook from "@/assets/images/logo-facebook.png";
 import logoGoogle from "@/assets/images/logo-google.png";
@@ -11,6 +13,8 @@ import treasure from "@/assets/images/treasure.png";
 
 export const images = {
   earth,
+  lessonCafe,
+  lessonHeroCafe,
   logoApple,
   logoFacebook,
   logoGoogle,

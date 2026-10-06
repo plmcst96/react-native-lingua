@@ -15,7 +15,7 @@ import {
 } from "react-native";
 
 import { images } from "@/constants/images";
-import { isCancelledError, logClerkError } from "@/lib/clerk";
+import { isAppleUnknownError, isCancelledError, logClerkError } from "@/lib/clerk";
 
 // Lets the in-app browser hand the SSO result back to the app.
 WebBrowser.maybeCompleteAuthSession();
@@ -41,13 +41,17 @@ export default function SocialAuthButtons() {
   const [loadingProvider, setLoadingProvider] = useState<Provider | null>(null);
 
   async function startFlow(provider: Provider) {
-    // Simulators without an Apple ID, Expo Go and builds without the capability fall back to the browser.
     if (
       provider === "Apple" &&
       Platform.OS === "ios" &&
       (await AppleAuthentication.isAvailableAsync())
     ) {
-      return startAppleAuthenticationFlow();
+      try {
+        return await startAppleAuthenticationFlow();
+      } catch (error) {
+        // Apple error 1000: no Apple Account on the simulator, or the build lacks a valid capability.
+        if (!isAppleUnknownError(error)) throw error;
+      }
     }
     // A native Google sheet would need @clerk/expo-google-signin and your own Google client IDs.
     return startSSOFlow({ strategy: SSO_STRATEGIES[provider] });

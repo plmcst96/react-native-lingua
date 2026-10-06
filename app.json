@@ -24,7 +24,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -41,7 +41,23 @@
       "expo-secure-store",
       "expo-apple-authentication",
       "expo-web-browser",
-      "expo-localization"
+      "expo-localization",
+      "@stream-io/video-react-native-sdk",
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": "$(PRODUCT_NAME) requires camera access to capture and transmit video",
+          "microphonePermission": "$(PRODUCT_NAME) requires microphone access so you can talk with your AI teacher"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

@@ -43,3 +43,9 @@ example
 /ios
 /android
 .agents
+.stream/
+.claude/
+
+# Python (vision-agent)
+.venv/
+__pycache__/
