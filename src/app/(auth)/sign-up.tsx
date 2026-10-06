@@ -18,6 +18,7 @@ import SocialAuthButtons from "@/components/SocialAuthButtons";
 import VerificationCodeModal from "@/components/VerificationCodeModal";
 import { logClerkError } from "@/lib/clerk";
 import { posthog } from "@/lib/posthog";
+import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function SignUp() {
   const { signUp, fetchStatus } = useSignUp();
@@ -67,6 +68,14 @@ export default function SignUp() {
       );
       setCodeError("We couldn't finish creating your account.");
       return false;
+    }
+
+    // Identifying before finalize makes this the first identify, ahead of the one in _layout.tsx.
+    if (signUp.createdUserId) {
+      posthog?.identify(signUp.createdUserId, {
+        $set: { preferred_language: useLanguageStore.getState().selectedLanguage },
+        $set_once: { signup_date: new Date().toISOString() },
+      });
     }
 
     // The guards in _layout.tsx then move the user to the right screen.

@@ -26,6 +26,7 @@
   --color-goal-track: #fbe5d0;
   --color-goal-fill: #f5953a;
   --color-plan-coral: #ef6f6c;
+  --color-chat-student: #efebff;
 
   /* Each weight is its own file; don't add font-bold (Android fakes it). */
   --font-poppins: "Poppins-Regular";
@@ -238,6 +239,11 @@
   background-color: var(--color-background);
 }
 
+@utility audio-lesson__header-button--end {
+  border-color: #ea4335;
+  background-color: #ea4335;
+}
+
 /* Stands in for the teacher's room until the call streams real video. */
 @utility audio-lesson__stage {
   overflow: hidden;
@@ -261,43 +267,6 @@
   background-color: rgba(255, 255, 255, 0.85);
 }
 
-@utility audio-lesson__self-view {
-  position: absolute;
-  top: 15px;
-  right: 14px;
-  width: 100px;
-  height: 152px;
-  overflow: hidden;
-  border-width: 2px;
-  border-color: var(--color-background);
-  border-radius: 14px;
-  background-color: #2d3561;
-  box-shadow: 0px 6px 16px rgba(13, 19, 43, 0.15);
-}
-
-@utility audio-lesson__self-name {
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  background-color: rgba(13, 19, 43, 0.55);
-}
-
-@utility audio-lesson__call-status {
-  flex-direction: row;
-  align-items: center;
-  margin-top: 8px;
-  padding: 8px 12px;
-  border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.85);
-}
-
 @utility audio-lesson__bubble {
   flex-direction: row;
   align-items: center;
@@ -307,18 +276,41 @@
   box-shadow: 0px 8px 24px rgba(13, 19, 43, 0.12);
 }
 
-@utility audio-lesson__control {
-  width: 60px;
-  height: 60px;
+@utility audio-lesson__bubble--student {
+  background-color: var(--color-chat-student);
+}
+
+@utility audio-lesson__caption {
+  font-family: var(--font-poppins);
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-text-primary);
+}
+
+@utility audio-lesson__speaker {
+  margin-bottom: 2px;
+  font-family: var(--font-poppins-semibold);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-lingua-deep-purple);
+}
+
+@utility audio-lesson__mic {
+  width: 84px;
+  height: 84px;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
   background-color: var(--color-background);
-  box-shadow: 0px 6px 16px rgba(13, 19, 43, 0.12);
+  box-shadow: 0px 8px 20px rgba(13, 19, 43, 0.15);
 }
 
-@utility audio-lesson__control--end {
-  background-color: #ea4335;
+@utility audio-lesson__mic--waiting {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@utility audio-lesson__mic--listening {
+  background-color: var(--color-lingua-deep-purple);
 }
 
 @utility audio-lesson__control-label {
@@ -337,6 +329,33 @@
   border-radius: 18px;
   background-color: var(--color-background);
   box-shadow: var(--shadow-card);
+}
+
+@utility lesson-complete__backdrop {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: rgba(13, 19, 43, 0.55);
+}
+
+@utility lesson-complete__card {
+  width: 100%;
+  max-width: 360px;
+  align-items: center;
+  padding: 24px 20px 20px;
+  border-radius: var(--radius-card);
+  background-color: var(--color-background);
+  box-shadow: 0px 12px 32px rgba(13, 19, 43, 0.2);
+}
+
+@utility lesson-complete__xp {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 14px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 9999px;
+  background-color: var(--color-goal-surface);
 }
 
 @utility button__label {

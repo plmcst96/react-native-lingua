@@ -16,7 +16,14 @@ export async function POST(request: Request) {
       return Response.json({ error: "You need to be signed in" }, { status: 401 });
     }
 
-    const { lessonId, languageCode } = (await request.json()) as CreateCallBody;
+    let body: CreateCallBody;
+    try {
+      body = (await request.json()) as CreateCallBody;
+    } catch {
+      return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
+    const { lessonId, languageCode } = body;
     const lesson = lessonId ? getLessonById(lessonId) : undefined;
     if (!lesson || lesson.languageCode !== languageCode) {
       return Response.json({ error: "Unknown lesson for this language" }, { status: 400 });

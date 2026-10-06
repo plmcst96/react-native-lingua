@@ -1,7 +1,7 @@
-import { useAuth } from "@clerk/expo";
 import type { Call } from "@stream-io/video-react-native-sdk";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useSessionToken } from "@/hooks/useSessionToken";
 import { startTeacherAgent, stopTeacherAgent, type TeacherAgentSession } from "@/lib/stream";
 
 export type TeacherAgentStatus = "idle" | "connecting" | "connected" | "failed";
@@ -13,10 +13,11 @@ const JOIN_TIMEOUT_MS = 30_000;
 
 // Sends the AI teacher into a live lesson call and removes it again on cleanup.
 export function useTeacherAgent(call: Call | undefined, isCallLive: boolean) {
-  const { getToken } = useAuth();
+  const getToken = useSessionToken();
   const sessionRef = useRef<TeacherAgentSession | undefined>(undefined);
   const [session, setSession] = useState<TeacherAgentSession>();
   const [presence, setPresence] = useState<AgentPresence>("waiting");
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [hasFailed, setHasFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
@@ -24,9 +25,15 @@ export function useTeacherAgent(call: Call | undefined, isCallLive: boolean) {
     const currentSession = sessionRef.current;
     if (!currentSession) return;
     sessionRef.current = undefined;
-    stopTeacherAgent(getToken, currentSession).catch((error) =>
-      console.error("[Agent] Stop failed", error),
-    );
+
+    async function stop(session: TeacherAgentSession) {
+      // After sign-out the request can't be authorized. That's fine: the student has left the
+      // call, and the agent leaves on its own once it's alone (agent_idle_timeout, 60 s).
+      if (!(await getToken())) return;
+      await stopTeacherAgent(getToken, session);
+    }
+
+    stop(currentSession).catch((error) => console.error("[Agent] Stop failed", error));
   }, [getToken]);
 
   useEffect(() => {
@@ -71,15 +78,19 @@ export function useTeacherAgent(call: Call | undefined, isCallLive: boolean) {
     }
 
     const subscription = call.state.participants$.subscribe((participants) => {
-      const isInCall = participants.some(
+      const teacher = participants.find(
         (participant) => participant.userId === session.agentUserId,
       );
+      setIsSpeaking(Boolean(teacher?.isSpeaking));
       setPresence((current) => {
-        if (isInCall) return "joined";
+        if (teacher) return "joined";
         return current === "joined" ? "left" : current;
       });
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      setIsSpeaking(false);
+    };
   }, [call, session]);
 
   useEffect(() => {
@@ -104,6 +115,7 @@ export function useTeacherAgent(call: Call | undefined, isCallLive: boolean) {
 
   return {
     status: getStatus(),
+    isSpeaking,
     stopAgent,
     retryAgent,
   };

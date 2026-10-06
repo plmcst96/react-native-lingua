@@ -1,4 +1,3 @@
-import { useAuth } from "@clerk/expo";
 import {
   type Call,
   CallingState,
@@ -6,6 +5,7 @@ import {
 } from "@stream-io/video-react-native-sdk";
 import { useEffect, useState } from "react";
 
+import { useSessionToken } from "@/hooks/useSessionToken";
 import { createLessonCall } from "@/lib/stream";
 import type { LanguageCode } from "@/types/learning";
 
@@ -14,16 +14,30 @@ export type LessonCallStatus = "loading" | "connecting" | "joined" | "error" | "
 // Starts an audio-only Stream call for a lesson and leaves it when the screen closes.
 export function useLessonCall(lessonId: string | undefined, languageCode: LanguageCode | null) {
   const client = useStreamVideoClient();
-  const { getToken } = useAuth();
+  const getToken = useSessionToken();
+  const [isClientConnected, setIsClientConnected] = useState(false);
   const [call, setCall] = useState<Call>();
   const [callingState, setCallingState] = useState<CallingState>();
   const [isMicOn, setIsMicOn] = useState(false);
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const [hasGoneLive, setHasGoneLive] = useState(false);
   const [joinError, setJoinError] = useState<string>();
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (!client || !lessonId || !languageCode) {
+    if (!client) {
+      return;
+    }
+
+    const subscription = client.state.connectedUser$.subscribe((user) =>
+      setIsClientConnected(Boolean(user)),
+    );
+    return () => subscription.unsubscribe();
+  }, [client]);
+
+  useEffect(() => {
+    // Joining before the client has its user token fails with "User token is not set".
+    if (!client || !isClientConnected || !lessonId || !languageCode) {
       return;
     }
 
@@ -60,7 +74,7 @@ export function useLessonCall(lessonId: string | undefined, languageCode: Langua
       setCall(undefined);
       setHasGoneLive(false);
     };
-  }, [client, getToken, lessonId, languageCode, attempt]);
+  }, [client, isClientConnected, getToken, lessonId, languageCode, attempt]);
 
   useEffect(() => {
     if (!call) {
@@ -70,8 +84,14 @@ export function useLessonCall(lessonId: string | undefined, languageCode: Langua
     const subscriptions = [
       call.state.callingState$.subscribe(setCallingState),
       call.microphone.state.status$.subscribe((status) => setIsMicOn(status === "enabled")),
+      call.state.localParticipant$.subscribe((participant) =>
+        setIsUserSpeaking(Boolean(participant?.isSpeaking)),
+      ),
     ];
-    return () => subscriptions.forEach((subscription) => subscription.unsubscribe());
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+      setIsUserSpeaking(false);
+    };
   }, [call]);
 
   function getStatus(): LessonCallStatus {
@@ -124,6 +144,7 @@ export function useLessonCall(lessonId: string | undefined, languageCode: Langua
     isLive: hasGoneLive && (status === "joined" || status === "connecting"),
     errorMessage: getErrorMessage(),
     isMicOn,
+    isUserSpeaking,
     toggleMic,
     endCall,
     restartCall,

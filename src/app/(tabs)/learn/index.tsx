@@ -7,9 +7,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LessonCard from "@/components/LessonCard";
 import { images } from "@/constants/images";
 import { getLessonPath } from "@/data/lessons";
-import { progress } from "@/data/progress";
 import { getUnitById } from "@/data/units";
-import { posthog } from "@/lib/posthog";
+import { useProgress } from "@/hooks/useProgress";
 import { posthogLogger } from "@/lib/posthog-logger";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import type { Lesson, LessonStatus } from "@/types/learning";
@@ -33,7 +32,7 @@ export default function Learn() {
   // The (tabs) guard in _layout.tsx only renders this screen once a language is saved.
   const languageCode = selectedLanguage ?? "es";
   const path = getLessonPath(languageCode);
-  const { completedLessonCount } = progress;
+  const { completedLessonCount } = useProgress(languageCode);
   const currentIndex = Math.min(completedLessonCount, path.length - 1);
   const currentLesson = path[currentIndex];
   const currentUnit = currentLesson ? getUnitById(currentLesson.unitId) : undefined;
@@ -45,11 +44,6 @@ export default function Learn() {
   }
 
   function openLesson(lesson: Lesson) {
-    posthog?.capture("lesson_started", {
-      language_code: languageCode,
-      lesson_id: lesson.id,
-      source: "lessons_list",
-    });
     posthogLogger.lessonLaunchRequested(languageCode, lesson.id, "lessons_list");
     router.push({ pathname: "/learn/lesson/[id]", params: { id: lesson.id } });
   }

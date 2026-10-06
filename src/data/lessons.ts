@@ -58,10 +58,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "It's the first day of Spanish class and you're meeting a new classmate.",
+      scenario: "It's the first day of Spanish class, and you're the friendly teacher welcoming a brand-new student.",
       instructions:
-        "Teach hola, buenos días, me llamo and mucho gusto. Have the student greet you and say their name.",
-      openingLine: "Hi! Today we'll learn how to say hello in Spanish. Ready? Let's start with 'hola'.",
+        "Start with hola, then buenos días, me llamo and mucho gusto, one at a time. Then practice ¿Cómo te llamas? and finish by having the student greet you and say their own name with me llamo.",
+      openingLine: "Hi, I'm so glad you're here! Let's start with 'hola', which means hello, so say it with me: hola.",
     },
   },
   {
@@ -103,10 +103,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor chatting over the fence about what a normal day looks like.",
       instructions:
-        "Teach casa, trabajo, comer and dormir. Ask simple questions about the student's routine.",
-      openingLine: "Hey there! Let's talk about your day in Spanish. First word: 'casa', which means home.",
+        "Teach casa, trabajo, comer and dormir one at a time, then the routine sentences. Ask easy questions about their day and help them answer with Como en casa or Trabajo en una oficina.",
+      openingLine: "Hey there, let's talk about your day in Spanish! Our first word is 'casa', which means home, so give it a try: casa.",
     },
   },
   {
@@ -148,10 +148,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a waiter at a small café in Madrid and the student is your customer.",
+      scenario: "You're a cheerful waiter at a small café in Madrid, and the student is your customer.",
       instructions:
-        "Teach how to order a drink, ask the price and ask for the bill. Stay in the café role-play.",
-      openingLine: "Welcome to the café! Let's learn how to order. Try saying 'café con leche'.",
+        "Teach café con leche, agua, por favor and la cuenta first. Then stay in the café role-play: take their order, answer ¿Cuánto cuesta? with a simple price, and have them ask for la cuenta at the end.",
+      openingLine: "Welcome to the café, I'm happy to see you! Let's order a 'café con leche', which means a coffee with milk, so try saying it with me.",
     },
   },
   {
@@ -193,10 +193,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost in the center of Madrid and asks you for help.",
+      scenario: "The student is lost in the center of Madrid, and you're a helpful local they stop on the street.",
       instructions:
-        "Teach la estación, dónde, a la izquierda and a la derecha. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions in Spanish. First word: 'dónde', which means where.",
+        "Teach dónde, la estación, a la izquierda and a la derecha. Have the student ask ¿Dónde está la estación?, then answer with short directions like Siga todo recto and Gire a la izquierda and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in Spanish! Our first word is 'dónde', which means where, so say it with me: dónde.",
     },
   },
   {
@@ -238,10 +238,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant in a clothing store in Seville and the student is a customer.",
+      scenario: "You're a friendly shop assistant in a clothing store in Seville, and the student is looking for a jacket.",
       instructions:
-        "Teach la tienda, caro, barato and la talla. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Welcome to the shop! Let's go shopping in Spanish. Try asking: '¿Cuánto cuesta esto?'",
+        "Teach la tienda, caro, barato and la talla. Then stay in the shop role-play: have them ask ¿Cuánto cuesta esto?, give simple prices, help them ask for a bigger size, and let them finish with Me lo llevo.",
+      openingLine: "Welcome to the shop, take a look around! Let's ask a price first: '¿Cuánto cuesta esto?' means how much does this cost, so try it with me.",
     },
   },
   {
@@ -283,10 +283,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're showing the student photos from a family lunch in Valencia.",
+      scenario: "You're showing the student photos from a big family lunch in Valencia.",
       instructions:
-        "Teach la familia, la madre, el padre and el amigo. Ask the student simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in Spanish. First word: 'la familia'.",
+        "Teach la familia, la madre, el padre and el amigo while describing your photos. Then ask ¿Tienes hermanos? and help the student talk about their own family with Esta es mi madre and Tengo una hermana.",
+      openingLine: "Hi, I've got some family photos to show you! Our first word is 'la familia', which means the family, so say it with me.",
     },
   },
   {
@@ -328,10 +328,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're meeting someone new at a party in Paris.",
+      scenario: "You're meeting the student for the first time at a friendly party in Paris.",
       instructions:
-        "Teach bonjour, salut, je m'appelle and enchanté. Have the student greet you and say their name.",
-      openingLine: "Bonjour! Today you'll learn your first French greetings. Let's start with 'bonjour'.",
+        "Teach bonjour, salut, je m'appelle and enchanté one at a time, and explain that salut is the casual one. Then ask Comment tu t'appelles ? and have the student answer with je m'appelle and their own name.",
+      openingLine: "Hi, welcome to your first French lesson! Let's start with 'bonjour', which means hello, so say it with me: bonjour.",
     },
   },
   {
@@ -373,10 +373,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a baker in a small Parisian boulangerie and the student is your customer.",
+      scenario: "You're a cheerful baker in a little Parisian boulangerie, and the student is your first customer of the morning.",
       instructions:
-        "Teach how to order bread politely, ask the price and say thank you. Stay in the bakery role-play.",
-      openingLine: "Welcome to the bakery! Let's order something tasty. Try saying 'une baguette'.",
+        "Teach une baguette, un croissant, s'il vous plaît and merci. Then stay in the bakery role-play: have them order with Je voudrais, answer C'est combien ? with a simple price, and wish them bonne journée.",
+      openingLine: "Welcome to my bakery, everything's fresh this morning! Let's start with 'une baguette', which means a baguette, so try saying it with me.",
     },
   },
   {
@@ -418,10 +418,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a waiter at a café terrace in Paris and the student is your customer.",
+      scenario: "You're a friendly waiter at a sunny café terrace in Paris, and the student is your customer.",
       instructions:
-        "Teach how to order a drink, ask for water and ask for the bill. Stay in the café role-play.",
-      openingLine: "Bonjour! Welcome to the café. Let's learn to order. Try saying 'un café, s'il vous plaît'.",
+        "Teach un café, un thé, un verre d'eau and l'addition. Then stay in the café role-play: take their order, offer them un verre d'eau, and have them ask for l'addition at the end.",
+      openingLine: "Welcome to the café, have a seat! Let's order 'un café', which means an espresso, so say it with me: un café.",
     },
   },
   {
@@ -463,10 +463,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost in the old town of Lyon and asks you for help.",
+      scenario: "The student is lost in the old town of Lyon, and you're a helpful local they stop on the street.",
       instructions:
-        "Teach la gare, où, à gauche and à droite. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions in French. First word: 'où', which means where.",
+        "Teach où, la gare, à gauche and à droite. Have the student ask Où est la gare ?, then answer with short directions like Allez tout droit and Tournez à gauche and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in French! Our first word is 'où', which means where, so say it with me: où.",
     },
   },
   {
@@ -508,10 +508,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant in a boutique in Paris and the student is a customer.",
+      scenario: "You're a friendly shop assistant in a boutique in Paris, and the student is looking for a jacket.",
       instructions:
-        "Teach le magasin, cher, pas cher and la taille. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Bonjour! Welcome to the boutique. Try asking: 'Combien ça coûte ?'",
+        "Teach le magasin, cher, pas cher and la taille. Then stay in the shop role-play: have them ask Combien ça coûte ?, give simple prices, help them ask for size M, and let them finish with Je le prends.",
+      openingLine: "Welcome to the boutique, take your time! Let's ask a price first: 'Combien ça coûte ?' means how much does it cost, so try it with me.",
     },
   },
   {
@@ -555,8 +555,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos from a family picnic in Provence.",
       instructions:
-        "Teach la famille, la mère, le père and un ami. Ask the student simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in French. First word: 'la famille'.",
+        "Teach la famille, la mère, le père and un ami while describing your photos. Then ask Tu as des frères et sœurs ? and help the student talk about their own family with Voici ma mère and J'ai un frère.",
+      openingLine: "Hi, I've brought some photos from a family picnic! Our first word is 'la famille', which means the family, so say it with me.",
     },
   },
   {
@@ -597,10 +597,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're greeting a neighbor on a quiet street in Tokyo.",
+      scenario: "You're greeting a friendly neighbor on a quiet street in Tokyo.",
       instructions:
-        "Teach konnichiwa, ohayō gozaimasu, arigatō and sayōnara. Say each word slowly with its meaning.",
-      openingLine: "Hi! Let's learn how to say hello in Japanese. Listen first: 'konnichiwa'.",
+        "Teach konnichiwa, ohayō gozaimasu, arigatō and sayōnara slowly, one at a time. Then practice ogenki desu ka and the answer hai, genki desu, and finish by greeting each other like neighbors.",
+      openingLine: "Hi, I'm so happy you're here! Let's start with 'konnichiwa', which means hello, so listen and say it with me.",
     },
   },
   {
@@ -646,10 +646,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "It's the first day at a language school in Kyoto and you're meeting the student.",
+      scenario: "It's the first day at a language school in Kyoto, and you're welcoming the student to class.",
       instructions:
-        "Teach hajimemashite, 'watashi wa ___ desu' and yoroshiku onegaishimasu. Have the student introduce themselves.",
-      openingLine: "Welcome! Today you'll introduce yourself in Japanese. Let's start with 'hajimemashite'.",
+        "Teach hajimemashite, watashi, namae and gakusei, then the pattern 'watashi wa ___ desu' and yoroshiku onegaishimasu. Finish by having the student introduce themselves with their own name.",
+      openingLine: "Welcome to class, it's great to meet you! Let's start with 'hajimemashite', which means nice to meet you, so try it with me.",
     },
   },
   {
@@ -695,10 +695,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a waiter at a cozy café in Tokyo and the student is your customer.",
+      scenario: "You're a friendly waiter at a cozy café in Tokyo, and the student is your customer.",
       instructions:
-        "Teach kōhī, mizu, kudasai and ikura. Have the student order a drink and ask for the bill.",
-      openingLine: "Irasshaimase! Welcome to the café. Let's order. Try saying 'kōhī o kudasai'.",
+        "Teach kōhī, mizu, kudasai and ikura. Then stay in the café role-play: have them order with kōhī o kudasai, answer ikura desu ka with a simple price, and help them ask for the bill with okaikei o onegaishimasu.",
+      openingLine: "Welcome to the café, come on in! Let's order a coffee: 'kōhī o kudasai' means a coffee, please, so say it with me.",
     },
   },
   {
@@ -752,10 +752,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost near a busy street in Osaka and asks you for help.",
+      scenario: "The student is lost near a busy street in Osaka, and you're a helpful local they stop for help.",
       instructions:
-        "Teach eki, doko, hidari and migi. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions in Japanese. First word: 'doko', which means where.",
+        "Teach doko, eki, hidari and migi. Have the student ask eki wa doko desu ka, then answer with short directions like massugu itte kudasai and hidari ni magatte kudasai and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in Japanese! Our first word is 'doko', which means where, so say it with me: doko.",
     },
   },
   {
@@ -805,10 +805,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant at a souvenir shop in Kyoto and the student is a customer.",
+      scenario: "You're a friendly shop assistant at a souvenir shop in Kyoto, and the student is looking for a gift.",
       instructions:
-        "Teach mise, kore, takai and yasui. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Irasshaimase! Point at something and ask: 'kore wa ikura desu ka?'",
+        "Teach mise, kore, takai and yasui. Then stay in the shop role-play: have them point and ask kore wa ikura desu ka, give simple prices, let them say chotto takai desu, and finish with kore o kudasai.",
+      openingLine: "Welcome to my little shop, have a look around! Let's start with 'kore', which means this, so say it with me: kore.",
     },
   },
   {
@@ -864,8 +864,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos from a family trip to see the cherry blossoms.",
       instructions:
-        "Teach kazoku, haha, chichi and tomodachi. Ask the student simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in Japanese. First word: 'kazoku', which means family.",
+        "Teach kazoku, haha, chichi and tomodachi while describing your photos. Then ask kyōdai wa imasu ka and help the student describe their own family and introduce a friend with kochira wa tomodachi no ___ desu.",
+      openingLine: "Hi, I've got some cherry blossom photos to show you! Our first word is 'kazoku', which means family, so say it with me.",
     },
   },
   {
@@ -906,10 +906,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're meeting a new classmate at a café in Seoul.",
+      scenario: "You're meeting a new classmate at a cozy café in Seoul.",
       instructions:
-        "Teach annyeonghaseyo, gamsahamnida, ne and aniyo, then the introduction phrases.",
-      openingLine: "Hi! Let's learn a polite Korean hello. Listen: 'annyeonghaseyo'.",
+        "Teach annyeonghaseyo, gamsahamnida, ne and aniyo slowly, one at a time. Then practice the introduction phrases, and finish by having the student greet you and say their own name.",
+      openingLine: "Hi, it's so nice to meet you! Let's start with 'annyeonghaseyo', a polite hello, so listen and say it with me.",
     },
   },
   {
@@ -955,10 +955,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor in Busan asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor in Busan chatting about what a normal day looks like.",
       instructions:
-        "Teach jip, hoesa, meokda and jada. Ask simple questions about the student's routine.",
-      openingLine: "Hi! Let's talk about your day in Korean. First word: 'jip', which means home.",
+        "Teach jip, hoesa, meokda and jada one at a time, then the routine sentences. Ask easy questions about their day and help them answer with hoesa-e gayo or jibeseo babeul meogeoyo.",
+      openingLine: "Hey there, let's talk about your day in Korean! Our first word is 'jip', which means home, so give it a try: jip.",
     },
   },
   {
@@ -1004,10 +1004,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a barista at a cozy café in Seoul and the student is your customer.",
+      scenario: "You're a cheerful barista at a cozy café in Seoul, and the student is your customer.",
       instructions:
-        "Teach how to order a drink with 'juseyo', ask the price and pay. Stay in the café role-play.",
-      openingLine: "Welcome to the café! Let's learn to order. Try saying 'keopi juseyo'.",
+        "Teach keopi, mul, han jan and juseyo. Then stay in the café role-play: have them order with amerikano han jan juseyo, answer eolmayeyo with a simple price, and let them pay with kadeuro halgeyo.",
+      openingLine: "Welcome to the café, what are we having today? Let's start with 'keopi juseyo', which means coffee, please, so say it with me.",
     },
   },
   {
@@ -1053,10 +1053,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost near a busy street in Seoul and asks you for help.",
+      scenario: "The student is lost near a busy street in Seoul, and you're a helpful local they stop for help.",
       instructions:
-        "Teach yeok, eodi, oenjjok and oreunjjok. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions in Korean. First word: 'eodi', which means where.",
+        "Teach eodi, yeok, oenjjok and oreunjjok. Have the student ask jihacheollyeogi eodiyeyo, then answer with short directions like jjuk gaseyo and oreunjjogeuro gaseyo and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in Korean! Our first word is 'eodi', which means where, so say it with me: eodi.",
     },
   },
   {
@@ -1098,10 +1098,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a seller at Namdaemun Market and the student wants to buy a souvenir.",
+      scenario: "You're a friendly seller at Namdaemun Market, and the student wants to buy a souvenir.",
       instructions:
-        "Teach igeo, eolma, bissayo and ssayo. Stay in the market role-play and keep prices simple.",
-      openingLine: "Welcome to the market! Point at something and ask: 'igeo eolmayeyo?'",
+        "Teach igeo, eolma, bissayo and ssayo. Then stay in the market role-play: have them point and ask igeo eolmayeyo, give simple prices, let them say neomu bissayo, and finish with igeo juseyo.",
+      openingLine: "Welcome to the market, take a look around! Let's start with 'igeo', which means this, so say it with me: igeo.",
     },
   },
   {
@@ -1153,8 +1153,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos of your family at a picnic by the Han River.",
       instructions:
-        "Teach gajok, eomma, appa and chingu. Ask the student simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in Korean. First word: 'gajok', which means family.",
+        "Teach gajok, eomma, appa and chingu while describing your photos. Then ask hyeongjega isseoyo and help the student talk about their own family and introduce a friend with i sarameun je chinguyeyo.",
+      openingLine: "Hi, I've got some picnic photos to show you! Our first word is 'gajok', which means family, so say it with me.",
     },
   },
   {
@@ -1196,10 +1196,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're meeting a new friend at a park in Berlin.",
+      scenario: "You're meeting the student for the first time in a sunny park in Berlin.",
       instructions:
-        "Teach hallo, guten Morgen, ich heiße and freut mich. Have the student greet you and say their name.",
-      openingLine: "Hi! Let's learn your first German greeting. It's easy: 'hallo'.",
+        "Teach hallo, guten Morgen, ich heiße and freut mich one at a time. Then practice Wie geht's? and Woher kommst du?, and finish by having the student greet you and say their own name with ich heiße.",
+      openingLine: "Hi, welcome to your first German lesson! Let's start with an easy one, 'hallo', which means hello, so say it with me.",
     },
   },
   {
@@ -1241,10 +1241,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor in Hamburg asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor in Hamburg chatting about what a normal day looks like.",
       instructions:
-        "Teach zu Hause, die Arbeit, essen and schlafen. Ask simple questions about the student's routine.",
-      openingLine: "Hi! Let's talk about your day in German. First word: 'die Arbeit', which means work.",
+        "Teach zu Hause, die Arbeit, essen and schlafen one at a time, then the routine sentences. Ask easy questions about their day and help them answer with Ich esse zu Hause or Ich arbeite in einem Büro.",
+      openingLine: "Hey there, let's talk about your day in German! Our first word is 'die Arbeit', which means work, so give it a try.",
     },
   },
   {
@@ -1286,10 +1286,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a waiter at a traditional café in Munich and the student is your customer.",
+      scenario: "You're a friendly waiter at a traditional café in Munich, and the student is your customer.",
       instructions:
-        "Teach how to order a drink, ask the price and ask for the bill. Stay in the café role-play.",
-      openingLine: "Welcome to the café! Let's learn how to order. Try saying 'einen Kaffee, bitte'.",
+        "Teach ein Kaffee, ein Wasser, bitte and die Rechnung. Then stay in the café role-play: take their order, answer Was kostet das? with a simple price, and have them ask for die Rechnung at the end.",
+      openingLine: "Welcome to the café, have a seat! Let's order 'einen Kaffee, bitte', which means a coffee, please, so try it with me.",
     },
   },
   {
@@ -1331,10 +1331,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost in the center of Berlin and asks you for help.",
+      scenario: "The student is lost in the center of Berlin, and you're a helpful local they stop on the street.",
       instructions:
-        "Teach der Bahnhof, wo, links and rechts. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions in German. First word: 'wo', which means where.",
+        "Teach wo, der Bahnhof, links and rechts. Have the student ask Wo ist der Bahnhof?, then answer with short directions like Gehen Sie geradeaus and Dann biegen Sie links ab and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in German! Our first word is 'wo', which means where, so say it with me: wo.",
     },
   },
   {
@@ -1376,10 +1376,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant in a clothing store in Cologne and the student is a customer.",
+      scenario: "You're a friendly shop assistant in a clothing store in Cologne, and the student is looking for a jacket.",
       instructions:
-        "Teach das Geschäft, teuer, billig and die Größe. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Welcome to the shop! Let's go shopping in German. Try asking: 'Wie viel kostet das?'",
+        "Teach das Geschäft, teuer, billig and die Größe. Then stay in the shop role-play: have them ask Wie viel kostet das?, give simple prices, help them ask for size M, and let them finish with Ich nehme es.",
+      openingLine: "Welcome to the shop, take your time! Let's ask a price first: 'Wie viel kostet das?' means how much does this cost, so try it with me.",
     },
   },
   {
@@ -1423,8 +1423,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos from a family birthday party in Stuttgart.",
       instructions:
-        "Teach die Familie, die Mutter, der Vater and der Freund. Ask simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in German. First word: 'die Familie'.",
+        "Teach die Familie, die Mutter, der Vater and der Freund while describing your photos. Then ask Hast du Geschwister? and help the student talk about their own family with Das ist meine Mutter and Ich habe einen Bruder.",
+      openingLine: "Hi, I've got some birthday party photos to show you! Our first word is 'die Familie', which means the family, so say it with me.",
     },
   },
   {
@@ -1468,8 +1468,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're meeting a new classmate on the first day of class in Beijing.",
       instructions:
-        "Teach nǐ hǎo, xièxie, zàijiàn and wǒ jiào. Say each word slowly and point out its tones.",
-      openingLine: "Hi! Let's learn to say hello in Chinese. Listen carefully: 'nǐ hǎo'.",
+        "Teach nǐ hǎo, xièxie, zàijiàn and wǒ jiào slowly, and gently point out each tone. Then practice nǐ hǎo ma and hěn gāoxìng rènshi nǐ, and finish by having the student introduce themselves with wǒ jiào and their own name.",
+      openingLine: "Hi, I'm so glad you're here! Let's start with 'nǐ hǎo', which means hello, so listen closely and say it with me.",
     },
   },
   {
@@ -1515,10 +1515,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor in Shanghai asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor in Shanghai chatting about what a normal day looks like.",
       instructions:
-        "Teach jiā, gōngzuò, chīfàn and shuìjiào. Ask simple questions about the student's routine.",
-      openingLine: "Hi! Let's talk about your day in Chinese. First word: 'jiā', which means home.",
+        "Teach jiā, gōngzuò, chīfàn and shuìjiào one at a time, with a quick tip on each tone. Then practice the routine sentences, ask easy questions about their day, and help them answer with wǒ zài jiā chīfàn.",
+      openingLine: "Hey there, let's talk about your day in Chinese! Our first word is 'jiā', which means home, so give it a try: jiā.",
     },
   },
   {
@@ -1564,10 +1564,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a barista at a small café in Beijing and the student is your customer.",
+      scenario: "You're a cheerful barista at a small café in Beijing, and the student is your customer.",
       instructions:
-        "Teach how to order a drink with 'qǐng gěi wǒ', ask the price and choose hot or cold. Stay in the café role-play.",
-      openingLine: "Welcome to the café! Let's learn to order. Try saying 'yì bēi kāfēi'.",
+        "Teach kāfēi, shuǐ, yì bēi and qǐng. Then stay in the café role-play: have them order with qǐng gěi wǒ yì bēi kāfēi, answer duōshao qián with a simple price, and ask if they want it hot so they can say wǒ yào rè de.",
+      openingLine: "Welcome to the café, what can I make for you? Let's start with 'kāfēi', which means coffee, so say it with me: kāfēi.",
     },
   },
   {
@@ -1613,10 +1613,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost near a busy street in Beijing and asks you for help.",
+      scenario: "The student is lost near a busy street in Beijing, and you're a helpful local they stop for help.",
       instructions:
-        "Teach dìtiězhàn, nǎlǐ, zuǒ and yòu. Give simple directions and point out the tones.",
-      openingLine: "Hi! Let's learn to ask for directions in Chinese. First word: 'nǎlǐ', which means where.",
+        "Teach nǎlǐ, dìtiězhàn, zuǒ and yòu, pointing out the tones. Have the student ask dìtiězhàn zài nǎlǐ, then answer with short directions like yìzhí zǒu and wǎng zuǒ guǎi and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in Chinese! Our first word is 'nǎlǐ', which means where, so say it with me: nǎlǐ.",
     },
   },
   {
@@ -1658,10 +1658,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a seller at a busy market in Shanghai and the student wants to buy a gift.",
+      scenario: "You're a friendly seller at a busy market in Shanghai, and the student wants to buy a gift.",
       instructions:
-        "Teach shāngdiàn, zhège, guì and piányi. Stay in the market role-play and let the student bargain.",
-      openingLine: "Welcome to the market! Point at something and ask: 'zhège duōshao qián?'",
+        "Teach shāngdiàn, zhège, guì and piányi. Then stay in the market role-play: have them point and ask zhège duōshao qián, give a playfully high price, and let them bargain with tài guì le and piányi yìdiǎn ba.",
+      openingLine: "Welcome to the market, have a look around! Let's start with 'zhège', which means this one, so say it with me: zhège.",
     },
   },
   {
@@ -1713,8 +1713,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos from a family dinner during the Spring Festival.",
       instructions:
-        "Teach jiārén, māma, bàba and péngyou. Ask the student simple questions about their family.",
-      openingLine: "Hi! Let's talk about family in Chinese. First word: 'jiārén', which means family.",
+        "Teach jiārén, māma, bàba and péngyou while describing your photos. Then ask nǐ yǒu xiōngdì jiěmèi ma and help the student talk about their own family with zhè shì wǒ māma and introduce a good friend.",
+      openingLine: "Hi, I've got some Spring Festival photos to show you! Our first word is 'jiārén', which means family, so say it with me.",
     },
   },
   {
@@ -1756,10 +1756,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're meeting someone new in a piazza in Florence.",
+      scenario: "You're meeting the student for the first time in a sunny piazza in Florence.",
       instructions:
-        "Teach ciao, buongiorno, mi chiamo and piacere. Have the student greet you and say their name.",
-      openingLine: "Ciao! Today you'll learn your first Italian greetings. Let's start with 'ciao'.",
+        "Teach ciao, buongiorno, mi chiamo and piacere one at a time, and mention that ciao works for both hi and bye. Then ask Come ti chiami? and have the student answer with mi chiamo and their own name.",
+      openingLine: "Hi, welcome to your first Italian lesson! Let's start with 'ciao', which means hi, so say it with me: ciao.",
     },
   },
   {
@@ -1801,10 +1801,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a barista at a busy bar in Rome and the student is your customer.",
+      scenario: "You're a cheerful barista at a busy bar in Rome, and the student is stopping by for breakfast.",
       instructions:
-        "Teach how to order a coffee and a pastry, ask the price and say thank you. Stay in the bar role-play.",
-      openingLine: "Buongiorno! Welcome to the bar. Let's order breakfast. Try saying 'un caffè'.",
+        "Teach un caffè, un cornetto, per favore and il conto. Then stay in the bar role-play: take their order, answer Quanto costa? with a simple price, and wish them buona giornata.",
+      openingLine: "Welcome to the bar, it's breakfast time! Let's order 'un caffè', which means an espresso, so try saying it with me.",
     },
   },
   {
@@ -1846,10 +1846,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor in Bologna asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor in Bologna chatting about what a normal day looks like.",
       instructions:
-        "Teach casa, il lavoro, mangiare and dormire. Ask simple questions about the student's routine.",
-      openingLine: "Ciao! Let's talk about your day in Italian. First word: 'casa', which means home.",
+        "Teach casa, il lavoro, mangiare and dormire one at a time, then the routine sentences. Ask easy questions about their day and help them answer with Mangio a casa or Lavoro in un ufficio.",
+      openingLine: "Hey there, let's talk about your day in Italian! Our first word is 'casa', which means home, so give it a try: casa.",
     },
   },
   {
@@ -1891,10 +1891,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost in the center of Milan and asks you for help.",
+      scenario: "The student is lost in the center of Milan, and you're a helpful local they stop on the street.",
       instructions:
-        "Teach la stazione, dove, a sinistra and a destra. Give simple directions and have the student repeat them.",
-      openingLine: "Ciao! Let's learn to ask for directions in Italian. First word: 'dove', which means where.",
+        "Teach dove, la stazione, a sinistra and a destra. Have the student ask Dov'è la stazione?, then answer with short directions like Vada sempre dritto and Giri a sinistra and check they understood.",
+      openingLine: "Hi there, let's learn to find your way in Italian! Our first word is 'dove', which means where, so say it with me: dove.",
     },
   },
   {
@@ -1936,10 +1936,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant in a clothing store in Milan and the student is a customer.",
+      scenario: "You're a friendly shop assistant in a clothing store in Milan, and the student is looking for a jacket.",
       instructions:
-        "Teach il negozio, caro, economico and la taglia. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Buongiorno! Welcome to the shop. Try asking: 'Quanto costa questo?'",
+        "Teach il negozio, caro, economico and la taglia. Then stay in the shop role-play: have them ask Quanto costa questo?, give simple prices, help them ask for size M, and let them finish with Lo prendo.",
+      openingLine: "Welcome to the shop, take your time! Let's ask a price first: 'Quanto costa questo?' means how much is this, so try it with me.",
     },
   },
   {
@@ -1983,8 +1983,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're showing the student photos from a Sunday family lunch in Naples.",
       instructions:
-        "Teach la famiglia, la madre, il padre and l'amico. Ask the student simple questions about their family.",
-      openingLine: "Ciao! Let's talk about family in Italian. First word: 'la famiglia'.",
+        "Teach la famiglia, la madre, il padre and l'amico while describing your photos. Then ask Hai fratelli o sorelle? and help the student talk about their own family with Questa è mia madre and Ho un fratello.",
+      openingLine: "Hi, I've got some Sunday lunch photos to show you! Our first word is 'la famiglia', which means the family, so say it with me.",
     },
   },
 
@@ -2029,10 +2029,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're meeting a new coworker on their first day at an office in London.",
+      scenario: "You're welcoming a new coworker on their first day at an office in London.",
       instructions:
-        "Teach hello, nice to meet you, how's it going and see you later. Speak slowly and use simple words.",
-      openingLine: "Hi there! Today we'll practice greetings and small talk in English. Let's start with 'hello'.",
+        "Teach hello, nice to meet you, how's it going and see you later, explaining when to use each one. Then make friendly small talk: introduce yourself, ask Where are you from?, and have the student answer and say goodbye with see you later.",
+      openingLine: "Hi there, welcome to the team! Let's start with 'nice to meet you', which you say when you meet someone new, so try it with me.",
     },
   },
   {
@@ -2074,10 +2074,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "A friendly neighbor in Manchester asks what a normal day looks like for you.",
+      scenario: "You're a friendly neighbor in Manchester chatting about what a normal day looks like.",
       instructions:
-        "Teach wake up, commute, have lunch and go to bed. Ask simple questions about the student's routine.",
-      openingLine: "Hi! Let's talk about your day in English. What time do you usually wake up?",
+        "Teach wake up, commute, have lunch and go to bed one at a time, with a quick example for each. Ask easy questions about their routine and help them answer in full sentences like I usually wake up at seven.",
+      openingLine: "Hey there, let's talk about your day in English! First up is 'wake up', so tell me, what time do you usually wake up?",
     },
   },
   {
@@ -2119,10 +2119,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a barista at a busy coffee shop in London and the student is your customer.",
+      scenario: "You're a cheerful barista at a busy coffee shop in London, and the student is your customer.",
       instructions:
-        "Teach latte, to go, could I get and the bill. Stay in the café role-play and speak slowly.",
-      openingLine: "Hi there, welcome in! What can I get for you? Try: 'Could I get a latte, please?'",
+        "Teach latte, to go, could I get and the bill. Then stay in the café role-play: have them order with Could I get a latte, please?, ask For here or to go?, and answer How much is that? with a simple price.",
+      openingLine: "Hi there, welcome in! A polite way to order is 'Could I get a latte, please?', so try saying it to me.",
     },
   },
   {
@@ -2164,10 +2164,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "The student is lost near a busy square in London and asks you for help.",
+      scenario: "The student is lost near a busy square in London, and you're a helpful local they stop for help.",
       instructions:
-        "Teach excuse me, turn left, go straight and next to. Give simple directions and have the student repeat them.",
-      openingLine: "Hi! Let's learn to ask for directions. Start politely with 'excuse me'.",
+        "Teach excuse me, go straight, turn left and next to. Have the student ask Excuse me, where's the train station?, then answer with short directions like Go straight and turn left and It's next to the bank and check they understood.",
+      openingLine: "Hi there, let's learn to ask for directions! Always start politely with 'excuse me', so say it with me: excuse me.",
     },
   },
   {
@@ -2209,10 +2209,10 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacher: {
-      scenario: "You're a shop assistant in a clothing store in New York and the student is a customer.",
+      scenario: "You're a friendly shop assistant in a clothing store in New York, and the student is looking for a jacket.",
       instructions:
-        "Teach how much, try on, receipt and on sale. Stay in the shop role-play and keep prices simple.",
-      openingLine: "Hi, welcome to the store! Let's go shopping. Try asking: 'How much is this?'",
+        "Teach how much, try on, on sale and receipt. Then stay in the shop role-play: have them ask How much is this?, mention it's on sale, let them ask Can I try this on? and Do you have this in a medium?, and finish with I'll take it.",
+      openingLine: "Hi, welcome to the store, take your time! Let's start with a price question, 'How much is this?', so try asking me.",
     },
   },
   {
@@ -2256,8 +2256,8 @@ export const lessons: Lesson[] = [
     aiTeacher: {
       scenario: "You're chatting with the student at a friend's barbecue in Sydney.",
       instructions:
-        "Teach parents, siblings, best friend and get along. Ask simple questions about their family and friends.",
-      openingLine: "Hi! Let's talk about family and friends. Do you have any siblings?",
+        "Teach parents, siblings, best friend and get along, with a quick example for each. Ask easy questions about their family and friends and help them answer in full sentences like I have two siblings or We get along really well.",
+      openingLine: "Hi, great to see you here! Let's start with 'siblings', which means brothers and sisters, so do you have any siblings?",
     },
   },
 ];

@@ -10,6 +10,7 @@ import { useEffect, useRef } from "react";
 
 import { posthog } from "@/lib/posthog";
 import { useLanguageStore } from "@/store/useLanguageStore";
+import type { LanguageCode } from "@/types/learning";
 
 // Keep the splash visible until fonts, saved language and Clerk are ready.
 SplashScreen.preventAutoHideAsync();
@@ -56,8 +57,10 @@ function RootNavigator() {
     email: string | null;
     firstName: string | null;
     lastName: string | null;
+    preferredLanguage: LanguageCode | null;
   } | null>(null);
-  const hasLanguage = useLanguageStore((state) => state.selectedLanguage !== null);
+  const selectedLanguage = useLanguageStore((state) => state.selectedLanguage);
+  const hasLanguage = selectedLanguage !== null;
   const hadLanguage = useRef(hasLanguage);
 
   useEffect(() => {
@@ -89,6 +92,7 @@ function RootNavigator() {
       email: user.primaryEmailAddress?.emailAddress ?? null,
       firstName: user.firstName,
       lastName: user.lastName,
+      preferredLanguage: selectedLanguage,
     };
     const previousIdentity = identifiedUser.current;
 
@@ -96,7 +100,8 @@ function RootNavigator() {
       previousIdentity?.id === currentIdentity.id &&
       previousIdentity.email === currentIdentity.email &&
       previousIdentity.firstName === currentIdentity.firstName &&
-      previousIdentity.lastName === currentIdentity.lastName
+      previousIdentity.lastName === currentIdentity.lastName &&
+      previousIdentity.preferredLanguage === currentIdentity.preferredLanguage
     ) {
       return;
     }
@@ -112,6 +117,7 @@ function RootNavigator() {
           : {}),
         ...(user.firstName ? { first_name: user.firstName } : {}),
         ...(user.lastName ? { last_name: user.lastName } : {}),
+        preferred_language: selectedLanguage,
       },
     });
     identifiedUser.current = currentIdentity;
@@ -119,6 +125,7 @@ function RootNavigator() {
     isLoaded,
     isSignedIn,
     isUserLoaded,
+    selectedLanguage,
     user,
     user?.primaryEmailAddress?.emailAddress,
     user?.firstName,

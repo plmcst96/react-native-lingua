@@ -8,9 +8,8 @@ import PlanItem from "@/components/PlanItem";
 import { images } from "@/constants/images";
 import { getLanguageByCode } from "@/data/languages";
 import { getCurrentLesson } from "@/data/lessons";
-import { progress } from "@/data/progress";
 import { getUnitById } from "@/data/units";
-import { posthog } from "@/lib/posthog";
+import { useProgress } from "@/hooks/useProgress";
 import { posthogLogger } from "@/lib/posthog-logger";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
@@ -21,6 +20,7 @@ export default function Home() {
   // The (tabs) guard in _layout.tsx only renders Home once a language is saved.
   const languageCode = selectedLanguage ?? "es";
   const language = getLanguageByCode(languageCode);
+  const progress = useProgress(languageCode);
   const currentLesson = getCurrentLesson(languageCode, progress.completedLessonCount);
   const lesson = currentLesson.status === "in-progress" ? currentLesson.lesson : undefined;
   const unit = lesson ? getUnitById(lesson.unitId) : undefined;
@@ -31,13 +31,15 @@ export default function Home() {
 
   function startLesson(source: "continue" | "view_all") {
     if (!lesson) return;
-    posthog?.capture("lesson_started", {
-      language_code: languageCode,
-      lesson_id: lesson.id,
-      source,
-    });
     posthogLogger.lessonLaunchRequested(languageCode, lesson.id, source);
-    router.push("/learn");
+    if (source === "continue") {
+      router.push(
+        { pathname: "/learn/lesson/[id]", params: { id: lesson.id } },
+        { withAnchor: true },
+      );
+    } else {
+      router.push("/learn");
+    }
   }
 
   const plan = [
@@ -157,7 +159,8 @@ export default function Home() {
                     iconBackground={item.iconBackground}
                     title={item.title}
                     subtitle={item.subtitle}
-                    isDone={progress.completedPlanItemIds.includes(`${lesson.id}:${item.id}`)}
+                    // The plan always shows the next open lesson, so nothing in it is done yet.
+                    isDone={false}
                   />
                 ))}
               </View>
